@@ -1,0 +1,74 @@
+html, body, #root, .react-mosaic-example-app {
+  margin: 0;
+  height:  100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.actions-label {
+  margin-right: 10px;
+}
+
+.theme-selection {
+      margin: 0;
+}
+
+.navbar-separator {
+    height: 20px;
+    border-left: 1px solid;
+    margin: 10px;
+}
+
+.navbar {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4vh;
+}
+
+.pt-logo {
+    background: url(https://blueprintjs.com/assets/palantir.svg) no-repeat 50%;
+    width: 50px;
+    height: 50px;
+    }
+
+ navbar-heading a {
+    color: white;
+  }
+
+  .mosaic {
+    height: calc(100% - 50px);
+  }
+
+  .github-link {
+    margin-left: 15px;
+  }
+
+  .toolbar-example {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+.body {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.example-window {
+  padding: 20px;
+  text-align: center;
+}
+
+.navbar-group {
+  flex: 1
+}
+
+html body div#root div.react-mosaic-example-app div div.mosaic-blueprint-theme.mosaic.mosaic-drop-target {
+  height: 95vh;
+  width: 100%;
+  overflow: hidden;
+}
