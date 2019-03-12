@@ -32,7 +32,7 @@ class VisualizationSelector extends React.Component<Props> {
                 items={VisualizationsAvailable}
                 itemPredicate={filterVisualization}
                 itemRenderer={renderVisualization}
-                onItemSelect={ (item) => {this.props.selectVisualization(item)} }
+                onItemSelect={ (item) => {this.props.selectVisualization(item);} }
                 filterable={false}
                 >
                 <Button

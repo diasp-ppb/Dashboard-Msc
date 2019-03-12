@@ -46,7 +46,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps> {
 
     }
 
-    selectVisualization = (item: VisualizationAvailable) => { console.log(item); this.setState({VisualizationSelected: item})}
+    selectVisualization = (item: VisualizationAvailable) => { this.setState({visualizationSelected: item})}
 
     handleClose = () => {this.props.closeWizard()}
     
@@ -56,7 +56,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps> {
         }
         this.props.addVisualization(settings);
     }
-    
+
     render() {
 
         return (
