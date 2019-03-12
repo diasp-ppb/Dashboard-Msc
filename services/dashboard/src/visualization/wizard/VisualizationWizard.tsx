@@ -55,6 +55,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps> {
             visualizationSelected: this.state.visualizationSelected,
         }
         this.props.addVisualization(settings);
+        this.props.closeWizard();
     }
 
     render() {
