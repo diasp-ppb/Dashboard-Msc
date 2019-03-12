@@ -56,8 +56,8 @@ class BarChart extends React.Component <Props, Config> {
       
       return (
         <LineChart
-          width={500}
-          height={300}
+          width={this.props.height}
+          height={this.props.width}
           data={this.props.data}
           margin={{
             top: 5, right: 30, left: 20, bottom: 5,

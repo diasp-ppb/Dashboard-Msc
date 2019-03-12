@@ -72,3 +72,7 @@ html body div#root div.react-mosaic-example-app div div.mosaic-blueprint-theme.m
   width: 100%;
   overflow: hidden;
 }
+
+.mapboxgl-canvas {
+position: inherit !important;
+}

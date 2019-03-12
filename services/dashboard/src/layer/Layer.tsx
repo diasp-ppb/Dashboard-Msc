@@ -24,8 +24,8 @@ import {
     LayerState,
     EMPTY_ARRAY,
     Theme,
-    VisualizationConfig,
-} from '../Interfaces'
+    VisualizationConfig
+    } from '../Interfaces'
 
 
 import {
@@ -34,10 +34,15 @@ import {
     NavbarDivider,
     NavbarGroup,
     NavbarHeading,
-    ButtonGroup,
+    ButtonGroup
   } from "@blueprintjs/core";
 
 import Visualization from '../visualization/Visualization'
+
+
+import ContainerDimensions from 'react-container-dimensions'
+import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
+
 
 interface Props {
   theme: Theme,
@@ -45,14 +50,28 @@ interface Props {
   updateTree: Function,
   drawerToggle: Function,
   visualizations: VisualizationConfig[],
+  setTheme: Function,
+  addVisualization: Function,
 }
 
 let windowCount = 3;
 
-class Layer extends React.Component<Props> {
-    
 
-    state: LayerState = this.props.layerState
+interface State {
+  visualizationWizzard:  boolean,
+  nodeInFocus: number,
+}
+
+class Layer extends React.Component<Props, State> {
+    
+  state: State = {
+    visualizationWizzard: false,
+    nodeInFocus: -1,
+  }
+
+
+  private handleOpen = (id: number) => this.setState({ visualizationWizzard: true, nodeInFocus: id});
+
 
       _onChange = (currentNode: MosaicNode<number> | null) => {
         this.props.updateTree(currentNode);
@@ -132,7 +151,7 @@ class Layer extends React.Component<Props> {
               <ButtonGroup>
                 <HTMLSelect
                     value={this.props.theme}
-                    onChange={(e) => this.setState({ currentTheme: e.currentTarget.value as Theme })}
+                    onChange={(e) => this.props.setTheme(e.currentTarget.value as Theme)}
                 >
                   {React.Children.toArray(Object.keys(THEMES).map((label) => <option>{label}</option>))}
                 </HTMLSelect>
@@ -161,22 +180,29 @@ class Layer extends React.Component<Props> {
         );
       }
     
-    getVisualization(id:Number) {
+    getVisualization(id:Number, width:number, height:number) {
       let vis = this.props.visualizations.find( item => item.nodeId === id)
-
       if (vis != undefined)
       {
         return (  
         <Visualization
           type={vis.type}
           data={vis.data} 
-          height={300}
-          width={300}
+          height={width}
+          width={height}
           />);
       }
-      else 
+      
+      return (<Button icon="plus" onClick={() => this.handleOpen(id.valueOf())}/>);
+    }
 
-      return;
+    addVisualization = (settings:any) => {
+        const vis: VisualizationConfig = {
+          type: settings.visualizationSelected.type, //TODO REFAZER PARA TIPOS 
+          data: {},
+          nodeId: this.state.nodeInFocus,
+        }
+        this.props.addVisualization(vis);
     }
 
     render() {
@@ -185,6 +211,7 @@ class Layer extends React.Component<Props> {
                 {this.renderNavBar()}
                 <Mosaic<number>
                 renderTile={(count, path) => (
+               
               <MosaicWindow<number>
                 additionalControls={EMPTY_ARRAY}
                 title={`Window ${count}`}
@@ -193,20 +220,28 @@ class Layer extends React.Component<Props> {
                 onDragStart={() => console.log('MosaicWindow.onDragStart')}
                 onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
                 renderToolbar={count === 2 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
-              >
-                <div className="example-window">
-                  <h1>{`Window ${count}`}</h1>
-                  {this.getVisualization(count)}
-                </div>
-  
-              </MosaicWindow>
-            )}
+             >
+                     <ContainerDimensions>
+                     { ({ width, height }) => 
+                       <div className="example-window">
+                       {this.getVisualization(count, width *0.8 , height * 0.8 )}
+                      </div>
+                    }
+                     </ContainerDimensions>
+               
+            </MosaicWindow> 
+              )}
             zeroStateView={<MosaicZeroState createNode={this._createNode} />}
             value={this.props.layerState.currentNode}
             onChange={this._onChange}
             onRelease={this._onRelease}
             className={THEMES[this.props.theme]}
           />
+            <VisualizationWizard
+            isOpen={this.state.visualizationWizzard}
+            closeWizard={() => this.setState({visualizationWizzard: false})}
+            addVisualization={this.addVisualization}
+            />
             </div>
         )
     }

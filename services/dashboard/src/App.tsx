@@ -8,6 +8,8 @@ import {
 
 import {
   AppState,
+  Theme,
+  VisualizationConfig,
 } from './Interfaces';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -92,14 +94,19 @@ class App extends React.PureComponent<Props> {
     visualizations: [
       [
         {
-          type: 'Barchart', 
+          type: 'BAR_CHART', 
           data: dataExample,
           nodeId: 1,
-        }
+        },
+       /* {
+          type: 'Map',
+          data: {},
+          nodeId: 2,
+        }*/
       ],
       [
         {
-          type: 'Barchart',
+          type: 'BAR_CHART',
           data: dataExample2,
           nodeId: 3
         }
@@ -163,6 +170,8 @@ class App extends React.PureComponent<Props> {
        updateTree={this.updateTree}
        drawerToggle={this.handleDrawer}
        visualizations={this.state.visualizations[this.state.currentLayer]}
+       setTheme={this.setTheme}
+       addVisualization={this.addVisualization}
       />
     )
   }
@@ -184,6 +193,31 @@ class App extends React.PureComponent<Props> {
       });
     };
 
+  setTheme = (theme: Theme) => {
+     this.setState( (state) => {
+        return {
+          ... state,
+          currentTheme: theme,
+        }
+     });
+  }
+
+  addVisualization = (vis: VisualizationConfig) => {
+      this.setState( (state) => {
+        const visu = this.state.visualizations.map((item, j) => {
+         if(j=== this.state.currentLayer){
+           return [...item, {...vis, data: dataExample}] //TODO 
+         } else {
+           return item;
+         }
+        })
+
+        return {
+          ...state, visualizations: visu
+        }
+      })
+  }
+
 
   private selectLayer = ( index: number) => {
     this.setState( (state) =>{ 
@@ -193,9 +227,6 @@ class App extends React.PureComponent<Props> {
                     isOpen: false,
                   } 
                 })
-
-
-    console.log(this.state.currentLayer); 
   };
 };
 

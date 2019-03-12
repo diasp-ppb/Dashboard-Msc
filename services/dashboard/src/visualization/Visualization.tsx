@@ -1,12 +1,14 @@
 import React from 'react'
 import { VisualizationProps } from '../Interfaces';
 import BarChart from './Chart/BarChart';
+import Map from './Map/Map'
+import {VisualizationsAvailable} from '../Interfaces'
 
 class Visualization extends React.Component<VisualizationProps> {
 
     renderChart() {
 
-        let barchart = (this.props.type === 'Barchart') ?
+        let vis = (this.props.type === VisualizationsAvailable[0].type) ?
         <BarChart 
                     width={this.props.width}
                     height={this.props.height}
@@ -28,18 +30,24 @@ class Visualization extends React.Component<VisualizationProps> {
                       ]
                     }
                     data={this.props.data}/>
-        : null;
-                
+        : 
+        (this.props.type === VisualizationsAvailable[1].type) ?
+        <Map
+          width={this.props.width}
+          height={this.props.height}
+        />
+        : 
+        null
+        ;
+        
         return (
-            barchart
+            vis
         );
     }
 
     render() {
-        return ( 
-           <div>  
-                {this.renderChart()}    
-           </div>
+        return (  
+                this.renderChart()    
         );
     }
 
