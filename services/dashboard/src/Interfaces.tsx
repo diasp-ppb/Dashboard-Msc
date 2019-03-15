@@ -6,8 +6,7 @@ import React from 'react'
 import {MosaicNode} from 'react-mosaic-component';
 import { BarConfig } from './visualization/Chart/BarChart';
 import { LineConfig } from './visualization/Chart/LineChart';
-
-
+ 
 export const THEMES = {
   ['Blueprint']: 'mosaic-blueprint-theme',
   ['Blueprint Dark']: classNames('mosaic-blueprint-theme', Classes.DARK),
@@ -80,10 +79,10 @@ export interface VisualizationProps {
     visualizationConfig: VisualizationConfig,
 }
 
-export interface AppState {
+export interface IAppState {
     layers: LayerState[],
-    isOpen: boolean,
     currentTheme: Theme;
+    isOpen: boolean,
     currentLayer: number;
     visualizations: VisualizationConfig[][],
 }

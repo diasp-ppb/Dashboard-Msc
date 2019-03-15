@@ -8,10 +8,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 
 class Map extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
 
   render() {
 

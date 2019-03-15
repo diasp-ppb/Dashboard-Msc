@@ -8,17 +8,21 @@ import {
 } from "@blueprintjs/core";
 
 import {
-  AppState,
+  IAppState,
   Theme,
   VisualizationConfig,
   THEMES,
 } from './Interfaces';
+
+import { connect } from 'react-redux';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import "../node_modules/react-mosaic-component/react-mosaic-component.css";
 import './App.css';
 import Layer from './layer/Layer'
+
+import { addLayer } from './redux/actions/AppActions';
 
 const dataExample = [
   {
@@ -53,56 +57,15 @@ const dataExample2 = [
   },
 ];
 
-interface Props {
 
-}
 
-class App extends React.PureComponent<Props> {
+class App extends React.PureComponent<IAppState> {
 
-  constructor(props:Props) {
-    super(props);
-  }
 
-  state: AppState = {
-    layers: [
-      {
-        currentNode: {
-          direction: 'row',
-          first: 2,
-          second: {
-            direction: 'column',
-            first: 1,
-            second: 3,
-          },
-          splitPercentage: 40,
-        },
-      },
-      {
-        currentNode: {
-          direction: 'row',
-          first: 1,
-          second: {
-            direction: 'column',
-            first: 2,
-            second: 3,
-          },
-          splitPercentage: 40,
-        }
-    }
-    ],
-    currentTheme: 'Blueprint',
-    isOpen: false,
-    currentLayer: 0,
-    visualizations: [
-      [],
-      []
-    ]
-  };
 
- 
   renderMenuLayers() {
   
-    return Object.keys(this.state.layers).map( (_item, index) => {
+    return Object.keys(this.props.layers).map( (_item, index) => {
       return (
       <Button intent="primary" onClick={() => this.selectLayer(index)} icon="presentation" key={index}>
         {index}
@@ -112,11 +75,11 @@ class App extends React.PureComponent<Props> {
   }
 
   render() {
-
+    const {currentTheme, isOpen} = this.props;
     return (
       <div className="react-mosaic-example-app" >
         <Drawer
-                    className={THEMES[this.state.currentTheme]}
+                    className={THEMES[currentTheme]}
                     icon="info-sign"
                     onClose={this.handleDrawer}
                     title="Urban Menu"
@@ -125,7 +88,7 @@ class App extends React.PureComponent<Props> {
                     canOutsideClickClose={true}
                     enforceFocus={true}
                     hasBackdrop={true}
-                    isOpen={this.state.isOpen}
+                    isOpen={isOpen}
                     size={Drawer.SIZE_SMALL}
                     usePortal={false}
                     vertical={false}
@@ -149,17 +112,18 @@ class App extends React.PureComponent<Props> {
   }
 
   handleDrawer = () => {
-    let newStatus = !this.state.isOpen;
-    this.setState( (state) => {return {...state, isOpen: newStatus}})
+    //let newStatus = !this.state.isOpen;
+    //this.setState( (state) => {return {...state, isOpen: newStatus}})
   }
 
   private getCurrentLayer() {
+    const {currentTheme, layers, currentLayer, visualizations} = this.props;
     return (
-      <Layer theme={this.state.currentTheme} 
-       layerState={this.state.layers[this.state.currentLayer]}  
+      <Layer theme={currentTheme} 
+       layerState={layers[currentLayer]}  
        updateTree={this.updateTree}
        drawerToggle={this.handleDrawer}
-       visualizations={this.state.visualizations[this.state.currentLayer]}
+       visualizations={visualizations[currentLayer]}
        setTheme={this.setTheme}
        addVisualization={this.addVisualization}
       />
@@ -168,7 +132,7 @@ class App extends React.PureComponent<Props> {
 
 
   updateTree = (currentNode: any) => {
-    this.setState( (state) => {
+   /* this.setState( (state) => {
       const list = this.state.layers.map((item, j) => {
         if (j === this.state.currentLayer) {
           return {...item, currentNode: currentNode}
@@ -180,20 +144,20 @@ class App extends React.PureComponent<Props> {
         return {
           ...state, layers: list
         };
-      });
+      });*/
     };
 
   setTheme = (theme: Theme) => {
-     this.setState( (state) => {
+   /*  this.setState( (state) => {
         return {
           ... state,
           currentTheme: theme,
         }
-     });
+     });*/
   }
 
   addVisualization = (vis: VisualizationConfig) => {
-      vis.data = dataExample;
+      /*vis.data = dataExample;
       this.setState( (state) => {
         const visu = this.state.visualizations.map((item, j) => {
          if(j=== this.state.currentLayer){
@@ -206,20 +170,28 @@ class App extends React.PureComponent<Props> {
         return {
           ...state, visualizations: visu
         }
-      })
+      })*/
   }
 
 
   private selectLayer = ( index: number) => {
-    this.setState( (state) =>{ 
+   /* this.setState( (state) =>{ 
                   return {
                     ...state, 
                     currentLayer: index,
                     isOpen: false,
                   } 
-                })
+                })*/
   };
 };
 
+const mapDispatchToProps = {
+  addLayer,
+}
 
-export default App;
+const mapStateToProps = (store: IAppState) => {
+  return store;
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
