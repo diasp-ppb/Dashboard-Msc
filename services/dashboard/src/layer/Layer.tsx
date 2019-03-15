@@ -45,7 +45,6 @@ import {
 import Visualization from '../visualization/Visualization'
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
-import { Action } from 'redux';
 
 
 interface Props {

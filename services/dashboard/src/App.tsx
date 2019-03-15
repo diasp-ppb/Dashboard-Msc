@@ -25,6 +25,7 @@ import './App.css';
 import Layer from './layer/Layer'
 
 import { closeDrawer } from './redux/actions/AppActions';
+import  SideMenu from './components/SideMenu/SideMenu';
 
 const dataExample = [
   {
@@ -63,59 +64,13 @@ const dataExample2 = [
 
 class App extends React.PureComponent<IAppState> {
 
-
-
-  renderMenuLayers() {
-  
-    return Object.keys(this.props.layers).map( (_item, index) => {
-      return (
-      <Button intent="primary" onClick={() => this.selectLayer(index)} icon="presentation" key={index}>
-        {index}
-      </Button>);
-
-    })
-  }
-
   render() {
-    const {currentTheme, isOpen} = this.props;
     return (
       <div className="react-mosaic-example-app" >
-        <Drawer
-                    className={THEMES[currentTheme]}
-                    icon="info-sign"
-                    onClose={()=>this.props.closeDrawer()}
-                    title="Urban Menu"
-                    autoFocus={true}
-                    canEscapeKeyClose={true}
-                    canOutsideClickClose={true}
-                    enforceFocus={true}
-                    hasBackdrop={true}
-                    isOpen={isOpen}
-                    size={Drawer.SIZE_SMALL}
-                    usePortal={false}
-                    vertical={false}
-                    style={{left: 0}}
-        >
-        <div className={Classes.DRAWER_BODY}>
-            <div className={Classes.DIALOG_BODY}>
-            <ButtonGroup vertical={true} fill={true}>
-              <H4>Layers</H4>
-              {this.renderMenuLayers()}
-            </ButtonGroup>
-            <Divider/>
-            </div>
-        </div>
-
-          <div className={Classes.DRAWER_FOOTER}>Urban Dash Footer</div>
-        </Drawer>
+        <SideMenu/>
         {this.getCurrentLayer()}  
         </div>
     );
-  }
-
-  handleDrawer = () => {
-    //let newStatus = !this.state.isOpen;
-    //this.setState( (state) => {return {...state, isOpen: newStatus}})
   }
 
   private getCurrentLayer() {
@@ -188,9 +143,7 @@ class App extends React.PureComponent<IAppState> {
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    closeDrawer: () => dispatch(closeDrawer())
-  }
+  return {}
 };
 
 
