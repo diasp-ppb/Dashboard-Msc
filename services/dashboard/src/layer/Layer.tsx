@@ -2,6 +2,10 @@ import React from 'react'
 import dropRight from 'lodash/dropRight';
 import classNames from 'classnames';
 import { Classes, HTMLSelect } from '@blueprintjs/core';
+import { openDrawer, closeDrawer } from '../redux/actions/AppActions';
+
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import {
     Corner,
@@ -24,7 +28,8 @@ import {
     LayerState,
     EMPTY_ARRAY,
     Theme,
-    VisualizationConfig
+    VisualizationConfig,
+    IAppState,
     } from '../Interfaces'
 
 
@@ -40,16 +45,17 @@ import {
 import Visualization from '../visualization/Visualization'
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
+import { Action } from 'redux';
 
 
 interface Props {
   theme: Theme,
   layerState: LayerState,
   updateTree: Function,
-  drawerToggle: Function,
   visualizations: VisualizationConfig[],
   setTheme: Function,
   addVisualization: Function,
+  openDrawer: Function,
 }
 
 let windowCount = 3;
@@ -127,7 +133,6 @@ class Layer extends React.Component<Props, State> {
 
       };
 
-      private handleDrawer = () => this.props.drawerToggle();
 
       private renderNavBar() {
         return (
@@ -135,7 +140,7 @@ class Layer extends React.Component<Props, State> {
             <NavbarGroup>
              <Button 
               icon="menu"
-              onClick={this.handleDrawer}
+              onClick={ () => this.props.openDrawer()}
              />
             
              <NavbarDivider />
@@ -246,4 +251,16 @@ class Layer extends React.Component<Props, State> {
     }
 }
 
-export default Layer;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    openDrawer: () => dispatch(openDrawer()),
+  }
+};
+
+const mapStateToProps = (store: IAppState) => {
+  return {};
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Layer);
+

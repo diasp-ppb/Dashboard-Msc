@@ -84,5 +84,5 @@ export interface IAppState {
     currentTheme: Theme;
     isOpen: boolean,
     currentLayer: number;
-    visualizations: VisualizationConfig[][],
+    visualizations: VisualizationConfig[][]
 }

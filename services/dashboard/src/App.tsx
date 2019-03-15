@@ -14,6 +14,8 @@ import {
   THEMES,
 } from './Interfaces';
 
+import { Dispatch } from 'redux';
+
 import { connect } from 'react-redux';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -22,7 +24,7 @@ import "../node_modules/react-mosaic-component/react-mosaic-component.css";
 import './App.css';
 import Layer from './layer/Layer'
 
-import { addLayer } from './redux/actions/AppActions';
+import { closeDrawer } from './redux/actions/AppActions';
 
 const dataExample = [
   {
@@ -81,7 +83,7 @@ class App extends React.PureComponent<IAppState> {
         <Drawer
                     className={THEMES[currentTheme]}
                     icon="info-sign"
-                    onClose={this.handleDrawer}
+                    onClose={()=>this.props.closeDrawer()}
                     title="Urban Menu"
                     autoFocus={true}
                     canEscapeKeyClose={true}
@@ -122,7 +124,6 @@ class App extends React.PureComponent<IAppState> {
       <Layer theme={currentTheme} 
        layerState={layers[currentLayer]}  
        updateTree={this.updateTree}
-       drawerToggle={this.handleDrawer}
        visualizations={visualizations[currentLayer]}
        setTheme={this.setTheme}
        addVisualization={this.addVisualization}
@@ -185,9 +186,13 @@ class App extends React.PureComponent<IAppState> {
   };
 };
 
-const mapDispatchToProps = {
-  addLayer,
-}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    closeDrawer: () => dispatch(closeDrawer())
+  }
+};
+
 
 const mapStateToProps = (store: IAppState) => {
   return store;

@@ -55,6 +55,18 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
         layers: Object.assign(state.layers, {currentNode: {}, splitPercentage: 40,})
       };
     }
+    case AppActionTypes.OPEN_DRAWER: {
+      return {
+        ...state,
+        isOpen: true,
+      }
+    }
+    case AppActionTypes.CLOSE_DRAWER: {
+      return {
+        ...state,
+        isOpen: false,
+      }
+    }
     default:
       return state;
   }
