@@ -38,8 +38,6 @@ import {
   } from "@blueprintjs/core";
 
 import Visualization from '../visualization/Visualization'
-
-
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
 
@@ -139,13 +137,16 @@ class Layer extends React.Component<Props, State> {
               icon="menu"
               onClick={this.handleDrawer}
              />
-    
-                <NavbarHeading>
+            
+             <NavbarDivider />
+
+            
+              <NavbarHeading>
                   <a href="localhost:3001">
                     Urban Dash
                   </a>
                 </NavbarHeading>
-            </NavbarGroup>
+              </NavbarGroup>
     
             <NavbarGroup>
               <ButtonGroup>
@@ -186,8 +187,7 @@ class Layer extends React.Component<Props, State> {
       {
         return (  
         <Visualization
-          type={vis.type}
-          data={vis.data} 
+          visualizationConfig={vis}
           height={width}
           width={height}
           />);
@@ -196,10 +196,9 @@ class Layer extends React.Component<Props, State> {
       return (<Button icon="plus" onClick={() => this.handleOpen(id.valueOf())}/>);
     }
 
-    addVisualization = (settings:any) => {
+    addVisualization = (settings:VisualizationConfig) => {
         const vis: VisualizationConfig = {
-          type: settings.visualizationSelected.type, //TODO REFAZER PARA TIPOS 
-          data: {},
+          ...settings,
           nodeId: this.state.nodeInFocus,
         }
         this.props.addVisualization(vis);

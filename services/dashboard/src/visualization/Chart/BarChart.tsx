@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  BarChart as BarChrt, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 
 import types from 'recharts'
@@ -11,51 +11,37 @@ interface Props {
   xAxis: boolean,
   yAxis: boolean, 
   tooltip: boolean,
-  lines: LineConfig[],
+  bars: BarConfig[],
   data: Array<any>,
+  legend: boolean,
 }
 
 interface Config {
-  lines: LineConfig[]
+  bars: BarConfig[]
 }
 
-export interface LineConfig {
-  type: types.LineType,
+export interface BarConfig {
+  fill: string,
   dataKey: string,
-  stroke: string,
+  stackId?: string,
 }
 
 
 class BarChart extends React.Component <Props, Config> {
-
-
-  constructor(props:Props) {
-    super(props);
-    this.state = {
-      lines: props.lines,
-    }
-
-  }
   
-  _addLines() {
-    console
-    return (
-        this.state.lines.map( (item, index)=> {
-          return (
-            <Line type={item.type} dataKey={item.dataKey} stroke={item.stroke} key={index}/>
-          )
+  _addBars() {
+    return this.props.bars.map( (item, index)=> {
+            return (
+             <Bar fill={item.fill} dataKey={item.dataKey}  key={index}/>
+            )
         }
-      )
     );
   }
 
   render(){
-
-      //Lines 
-
       
       return (
-        <LineChart
+        <BarChrt
           width={this.props.height}
           height={this.props.width}
           data={this.props.data}
@@ -64,12 +50,12 @@ class BarChart extends React.Component <Props, Config> {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          {this._addLines()}
-        </LineChart>
+          {this.props.xAxis && <XAxis dataKey="name" />}
+          {this.props.yAxis && <YAxis /> }
+          {this.props.tooltip && <Tooltip /> }
+          {this.props.legend && <Legend />}
+          {this._addBars()}
+        </BarChrt>
       );
   }
 }

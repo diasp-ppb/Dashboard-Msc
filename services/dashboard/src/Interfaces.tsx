@@ -4,6 +4,8 @@ import { MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 import React from 'react'
 import {MosaicNode} from 'react-mosaic-component';
+import { BarConfig } from './visualization/Chart/BarChart';
+import { LineConfig } from './visualization/Chart/LineChart';
 
 
 export const THEMES = {
@@ -21,6 +23,7 @@ export interface VisualizationAvailable {
 export const VisualizationsAvailable = [
     { type: 'BAR_CHART' },
     { type: 'MAP_DECK_GL'},
+    { type: 'LINE_CHART'},
 ]
 
 export const filterVisualization: ItemPredicate<VisualizationAvailable> = (query, visualization) => {
@@ -55,16 +58,26 @@ export interface  LayerState {
 }
 
 export interface VisualizationConfig {
-    type: string, //TODO REFAZER PARA TIPOS 
+    type: VisualizationAvailable,
     data: any,
     nodeId: number,
+    xAxis?: boolean,
+    yAxis?: boolean,
+    bars?: BarConfig[],
+    lines?: LineConfig[],
+    tooltip?: boolean,
+    legend?:boolean,
+    cartesianGrid: {
+        active: boolean,
+        strokeDasharray?: string,
+    },
+    baseMap?:boolean,
 }
 
 export interface VisualizationProps {
-    type: string, //TODO REFAZER PARA TIPOS 
-    data: any,
     height: number,
     width: number,
+    visualizationConfig: VisualizationConfig,
 }
 
 export interface AppState {

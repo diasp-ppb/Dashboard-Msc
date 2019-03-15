@@ -4,7 +4,7 @@ import ConfigurationSelector from './selectors/ConfigurationSelector'
 import VisualizationSelector from './selectors/VisualizationSelector'
 import {Dialog, Navbar, Tab, Tabs, Button, ButtonGroup ,Alignment} from "@blueprintjs/core";
 import { Classes } from '@blueprintjs/core';
-import { VisualizationsAvailable, VisualizationAvailable, } from "../../Interfaces"
+import { VisualizationsAvailable, VisualizationAvailable, VisualizationConfig } from "../../Interfaces"
 
 interface VisualizationWizardProps {
     isOpen: boolean,
@@ -17,18 +17,28 @@ interface State {
     animate: boolean,
     navbarTabId: string,
     vertical: boolean,
-    VisualizationSelected: VisualizationAvailable,
-    navBarTabId: string
+    visualizationConfig: VisualizationConfig,
+
 }
 
-class VisualizationWizard extends React.Component<VisualizationWizardProps> {
+class VisualizationWizard extends React.Component<VisualizationWizardProps, State> {
 
-    state = {
+    state: State = {
         activePanelOnly: false,
         animate: true,
         vertical: false,
-        visualizationSelected: VisualizationsAvailable[0],
-        navbarTabId: "visualization"
+        navbarTabId: "visualization",
+        visualizationConfig: {
+            type: VisualizationsAvailable[0],
+            data: {},
+            nodeId: -1,
+            xAxis: false,
+            yAxis: false,
+            cartesianGrid: {
+                active: false,
+                strokeDasharray: "3 3"
+            }
+        },
     }
 
 
@@ -38,24 +48,32 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps> {
         let panel = this.state.navbarTabId;
         return panel === "visualization" ?
                      <VisualizationSelector 
-                        visualizationSelected={this.state.visualizationSelected}
+                        visualizationSelected={this.state.visualizationConfig.type}
                         selectVisualization={this.selectVisualization}
                      /> 
                      :  
-                     panel === "configuration" ?  <ConfigurationSelector /> : <DataSelector />;
-
+                     panel === "configuration" ?  
+                     <ConfigurationSelector updateConfig={this.updateDataConfig} config={this.state.visualizationConfig}/> 
+                     : <DataSelector />;
     }
 
-    selectVisualization = (item: VisualizationAvailable) => { this.setState({visualizationSelected: item})}
+    selectVisualization = (item: VisualizationAvailable) => { 
+        this.setState( (state) => 
+            {
+                let visualizationConfig = {...state.visualizationConfig, type: item}
+                return {...state, visualizationConfig};
+            })
+    }
 
     handleClose = () => {this.props.closeWizard()}
     
     handleAddVisualization = () => {
-        let settings = {
-            visualizationSelected: this.state.visualizationSelected,
-        }
-        this.props.addVisualization(settings);
+        this.props.addVisualization(this.state.visualizationConfig);
         this.props.closeWizard();
+    }
+
+    updateDataConfig = (visualizationConfig:any) => {
+        this.setState( {visualizationConfig: Object.assign(this.state.visualizationConfig, visualizationConfig)});
     }
 
     render() {
@@ -78,8 +96,8 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps> {
                             selectedTabId={this.state.navbarTabId}
                         >
                             <Tab id="visualization" title="Visualization" />
-                            <Tab id="configuration" title="Configuration" />
                             <Tab id="data" title="Data" />
+                            <Tab id="configuration" title="Configuration" />
                         </Tabs>
                     </Navbar.Group>
         </Navbar>

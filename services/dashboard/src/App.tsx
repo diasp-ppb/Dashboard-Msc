@@ -1,15 +1,17 @@
-import { Classes } from '@blueprintjs/core';
+import { Classes, Divider, H4 } from '@blueprintjs/core';
 import React from 'react';
 
 import {
   Button,
   Drawer,
+  ButtonGroup,
 } from "@blueprintjs/core";
 
 import {
   AppState,
   Theme,
   VisualizationConfig,
+  THEMES,
 } from './Interfaces';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -92,25 +94,8 @@ class App extends React.PureComponent<Props> {
     isOpen: false,
     currentLayer: 0,
     visualizations: [
-      [
-        {
-          type: 'BAR_CHART', 
-          data: dataExample,
-          nodeId: 1,
-        },
-       /* {
-          type: 'Map',
-          data: {},
-          nodeId: 2,
-        }*/
-      ],
-      [
-        {
-          type: 'BAR_CHART',
-          data: dataExample2,
-          nodeId: 3
-        }
-      ]
+      [],
+      []
     ]
   };
 
@@ -119,9 +104,10 @@ class App extends React.PureComponent<Props> {
   
     return Object.keys(this.state.layers).map( (_item, index) => {
       return (
-      <Button onClick={() => this.selectLayer(index)} icon="volume-up" key={index}>
+      <Button intent="primary" onClick={() => this.selectLayer(index)} icon="presentation" key={index}>
         {index}
       </Button>);
+
     })
   }
 
@@ -130,7 +116,7 @@ class App extends React.PureComponent<Props> {
     return (
       <div className="react-mosaic-example-app" >
         <Drawer
-                    className={this.state.currentTheme}
+                    className={THEMES[this.state.currentTheme]}
                     icon="info-sign"
                     onClose={this.handleDrawer}
                     title="Urban Menu"
@@ -147,7 +133,11 @@ class App extends React.PureComponent<Props> {
         >
         <div className={Classes.DRAWER_BODY}>
             <div className={Classes.DIALOG_BODY}>
-                {this.renderMenuLayers()}
+            <ButtonGroup vertical={true} fill={true}>
+              <H4>Layers</H4>
+              {this.renderMenuLayers()}
+            </ButtonGroup>
+            <Divider/>
             </div>
         </div>
 
@@ -203,10 +193,11 @@ class App extends React.PureComponent<Props> {
   }
 
   addVisualization = (vis: VisualizationConfig) => {
+      vis.data = dataExample;
       this.setState( (state) => {
         const visu = this.state.visualizations.map((item, j) => {
          if(j=== this.state.currentLayer){
-           return [...item, {...vis, data: dataExample}] //TODO 
+           return [...item, vis ] 
          } else {
            return item;
          }
