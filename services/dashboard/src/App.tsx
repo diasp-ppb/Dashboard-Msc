@@ -74,42 +74,13 @@ class App extends React.PureComponent<IAppState> {
   }
 
   private getCurrentLayer() {
-    const {currentTheme, layers, currentLayer, visualizations} = this.props;
+    const {currentTheme} = this.props;
     return (
-      <Layer theme={currentTheme} 
-       layerState={layers[currentLayer]}  
-       updateTree={this.updateTree}
-       visualizations={visualizations[currentLayer]}
-       setTheme={this.setTheme}
+      <Layer 
+       theme={currentTheme}
        addVisualization={this.addVisualization}
       />
     )
-  }
-
-
-  updateTree = (currentNode: any) => {
-   /* this.setState( (state) => {
-      const list = this.state.layers.map((item, j) => {
-        if (j === this.state.currentLayer) {
-          return {...item, currentNode: currentNode}
-        } else {
-          return item;
-          }
-        });
-
-        return {
-          ...state, layers: list
-        };
-      });*/
-    };
-
-  setTheme = (theme: Theme) => {
-   /*  this.setState( (state) => {
-        return {
-          ... state,
-          currentTheme: theme,
-        }
-     });*/
   }
 
   addVisualization = (vis: VisualizationConfig) => {

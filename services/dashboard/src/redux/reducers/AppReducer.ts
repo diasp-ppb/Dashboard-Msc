@@ -67,6 +67,31 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
         isOpen: false,
       }
     }
+    case AppActionTypes.SELECT_LAYER: {
+      return {
+        ...state,
+        currentLayer: action.layerId
+      }
+    }
+    case AppActionTypes.UPDATE_WINDOWS_ARRANGEMENT: {
+      const list = state.layers.map((item, j) => {
+        if (j === state.currentLayer) {
+          return {...item, currentNode: action.currentNode}
+        } else {
+          return item;
+          }
+        });
+
+        return {
+          ...state, layers: list
+        };
+    }
+    case AppActionTypes.CHANGE_THEME: {
+      return {
+        ...state,
+        currentTheme: action.theme
+      }
+    }
     default:
       return state;
   }

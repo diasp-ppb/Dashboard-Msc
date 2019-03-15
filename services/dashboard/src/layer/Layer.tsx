@@ -2,7 +2,7 @@ import React from 'react'
 import dropRight from 'lodash/dropRight';
 import classNames from 'classnames';
 import { Classes, HTMLSelect } from '@blueprintjs/core';
-import { openDrawer, closeDrawer } from '../redux/actions/AppActions';
+import { openDrawer, updateWindowArrangement, changeTheme } from '../redux/actions/AppActions';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -50,11 +50,12 @@ import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
 interface Props {
   theme: Theme,
   layerState: LayerState,
-  updateTree: Function,
   visualizations: VisualizationConfig[],
-  setTheme: Function,
+  changeTheme: Function,
   addVisualization: Function,
   openDrawer: Function,
+  updateWindowArrangement: Function,
+  id: number,
 }
 
 let windowCount = 3;
@@ -77,7 +78,7 @@ class Layer extends React.Component<Props, State> {
 
 
       _onChange = (currentNode: MosaicNode<number> | null) => {
-        this.props.updateTree(currentNode);
+        this.props.updateWindowArrangement(this.props.id, currentNode);
       };
     
       _onRelease = (currentNode: MosaicNode<number> | null) => {
@@ -89,7 +90,7 @@ class Layer extends React.Component<Props, State> {
     autoArrange = () => {
         const leaves = getLeaves(this.props.layerState.currentNode);
         let newNode = createBalancedTreeFromLeaves(leaves);
-        this.props.updateTree(newNode);
+        this.props.updateWindowArrangement(this.props.id, newNode);
       };
 
 
@@ -128,7 +129,7 @@ class Layer extends React.Component<Props, State> {
         } else {
           currentNode = ++windowCount;
         }
-        this.props.updateTree(currentNode);
+        this.props.updateWindowArrangement(this.props.id,currentNode);
 
       };
 
@@ -156,7 +157,7 @@ class Layer extends React.Component<Props, State> {
               <ButtonGroup>
                 <HTMLSelect
                     value={this.props.theme}
-                    onChange={(e) => this.props.setTheme(e.currentTarget.value as Theme)}
+                    onChange={(e) => this.props.changeTheme(e.currentTarget.value as Theme)}
                 >
                   {React.Children.toArray(Object.keys(THEMES).map((label) => <option>{label}</option>))}
                 </HTMLSelect>
@@ -253,11 +254,18 @@ class Layer extends React.Component<Props, State> {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     openDrawer: () => dispatch(openDrawer()),
+    updateWindowArrangement: (layerId:number, currentNode: MosaicNode<number>)  => dispatch(updateWindowArrangement(layerId,currentNode)),
+    changeTheme: (theme: Theme) => dispatch(changeTheme(theme)),
   }
 };
 
 const mapStateToProps = (store: IAppState) => {
-  return {};
+  const layerId = store.currentLayer;
+  return {
+    id: layerId,
+    layerState: store.layers[layerId],
+    visualizations: store.visualizations[layerId]
+  };
 };
 
 

@@ -1,4 +1,6 @@
 import { ActionCreator, Dispatch } from 'redux';
+import { MosaicNode } from 'react-mosaic-component';
+import { Theme } from '../../Interfaces';
 
 
 export enum AppActionTypes {
@@ -6,6 +8,9 @@ export enum AppActionTypes {
     REMOVE_LAYER = 'REMOVE_LAYER',
     OPEN_DRAWER = 'OPEN_DRAWER',
     CLOSE_DRAWER = 'CLOSE_DRAWER',
+    SELECT_LAYER = 'SELECT_LAYER',
+    UPDATE_WINDOWS_ARRANGEMENT = 'UPDATE_WINDOWS_ARRANGEMENT',
+    CHANGE_THEME = 'CHANGE_THEME',
 }
 
 export interface IAppAddLayer{
@@ -21,9 +26,24 @@ export interface IAppOpenDrawer{
 export interface IAppCloseDrawer{
     type: AppActionTypes.CLOSE_DRAWER,
 }
+export interface IAppSelectLayer{
+    type: AppActionTypes.SELECT_LAYER,
+    layerId: number,
+}
 
+export interface IAppUpdateWindowArrangement{
+    type: AppActionTypes.UPDATE_WINDOWS_ARRANGEMENT,
+    currentNode: MosaicNode<number>,
+}
 
-export type AppAction = IAppAddLayer | IAppRemoveLayer | IAppOpenDrawer | IAppCloseDrawer;
+export interface IAppChangeTheme{
+    type: AppActionTypes.CHANGE_THEME,
+    theme: Theme,
+}
+
+export type AppAction = IAppAddLayer | IAppRemoveLayer | IAppOpenDrawer | 
+                     IAppCloseDrawer | IAppSelectLayer | IAppUpdateWindowArrangement |
+                     IAppChangeTheme;
 
 export function addLayer() {
     return {
@@ -43,4 +63,24 @@ export function closeDrawer() {
     }
 }
 
-       
+export function selectLayer(layerId: number) {
+    return {
+        type: AppActionTypes.SELECT_LAYER,
+        layerId: layerId,
+    }
+}
+
+export function updateWindowArrangement(layerId: number, currentNode:MosaicNode<number>) {
+    return {
+        type: AppActionTypes.UPDATE_WINDOWS_ARRANGEMENT,
+        layerId: layerId,
+        currentNode: currentNode
+    }
+}
+
+export function changeTheme(theme: Theme ) {
+    return {
+        type: AppActionTypes.CHANGE_THEME,
+        theme:theme,
+    }
+}

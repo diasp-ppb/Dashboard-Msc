@@ -2,7 +2,7 @@ import React from "react";
 import { ButtonGroup, H4, Drawer, Divider, Classes, Button } from "@blueprintjs/core";
 import { THEMES, Theme, IAppState, LayerState } from "../../Interfaces";
 import { Dispatch } from "redux";
-import { closeDrawer } from "../../redux/actions/AppActions";
+import { closeDrawer, selectLayer } from "../../redux/actions/AppActions";
 import { connect } from "react-redux";
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
   isOpen: boolean,
   layers: LayerState[],
   closeDrawer: Function,
+  selectLayer: Function,
 }
 
 class SideMenu extends React.Component<Props> {
@@ -18,7 +19,7 @@ class SideMenu extends React.Component<Props> {
       return (
         <Button
           intent="primary"
-          onClick={() => {} } // TODO this.selectLayer(index)}
+          onClick={() => this.props.selectLayer(index)}
           icon="presentation"
           key={index}
         >
@@ -64,7 +65,11 @@ class SideMenu extends React.Component<Props> {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    closeDrawer: () => dispatch(closeDrawer())
+    closeDrawer: () => dispatch(closeDrawer()),
+    selectLayer: (nodeId:number) => {
+        dispatch(closeDrawer()),
+        dispatch(selectLayer(nodeId))
+    }
   };
 };
 
