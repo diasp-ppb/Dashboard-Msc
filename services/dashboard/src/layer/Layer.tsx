@@ -2,7 +2,7 @@ import React from 'react'
 import dropRight from 'lodash/dropRight';
 import classNames from 'classnames';
 import { Classes, HTMLSelect } from '@blueprintjs/core';
-import { openDrawer, updateWindowArrangement, changeTheme } from '../redux/actions/AppActions';
+import { openDrawer, updateWindowArrangement, changeTheme, addVisualization } from '../redux/actions/AppActions';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -94,97 +94,10 @@ class Layer extends React.Component<Props, State> {
       };
 
 
-    addToTopRight = () => {
     
-        let { currentNode } = this.props.layerState;
-    
-        if (currentNode) {
-          const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
-          const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<number>;
-          const destination = getNodeAtPath(currentNode, path) as MosaicNode<number>;
-          const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : 'row';
-    
-          let first: MosaicNode<number>;
-          let second: MosaicNode<number>;
-          if (direction === 'row') {
-            first = destination;
-            second = ++windowCount;
-          } else {
-            first = ++windowCount;
-            second = destination;
-          }
-    
-          currentNode = updateTree(currentNode, [
-            {
-              path,
-              spec: {
-                $set: {
-                  direction,
-                  first,
-                  second,
-                },
-              },
-            },
-          ]);
-        } else {
-          currentNode = ++windowCount;
-        }
-        this.props.updateWindowArrangement(this.props.id,currentNode);
-
-      };
 
 
-      private renderNavBar() {
-        return (
-          <Navbar className={classNames(Classes.DARK)}>
-            <NavbarGroup>
-             <Button 
-              icon="menu"
-              onClick={ () => this.props.openDrawer()}
-             />
-            
-             <NavbarDivider />
-
-            
-              <NavbarHeading>
-                  <a href="localhost:3001">
-                    Urban Dash
-                  </a>
-                </NavbarHeading>
-              </NavbarGroup>
-    
-            <NavbarGroup>
-              <ButtonGroup>
-                <HTMLSelect
-                    value={this.props.theme}
-                    onChange={(e) => this.props.changeTheme(e.currentTarget.value as Theme)}
-                >
-                  {React.Children.toArray(Object.keys(THEMES).map((label) => <option>{label}</option>))}
-                </HTMLSelect>
-               
-              
-                <NavbarDivider />
-    
-                <Button 
-                  onClick={this.autoArrange}
-                  icon="grid-view" 
-                >
-                  Auto Arrange
-                </Button>
-    
-                <Button
-                  onClick={this.addToTopRight}
-                  icon="arrow-top-right"
-                >
-                  Add Window
-                </Button>
-              </ButtonGroup>
-            </NavbarGroup>
-    
-          </Navbar>
-         
-        );
-      }
+     
     
     getVisualization(id:Number, width:number, height:number) {
       let vis = this.props.visualizations.find( item => item.nodeId === id)
@@ -256,6 +169,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     openDrawer: () => dispatch(openDrawer()),
     updateWindowArrangement: (layerId:number, currentNode: MosaicNode<number>)  => dispatch(updateWindowArrangement(layerId,currentNode)),
     changeTheme: (theme: Theme) => dispatch(changeTheme(theme)),
+    addVisualization: (vis: VisualizationConfig) => dispatch(addVisualization(vis))
   }
 };
 

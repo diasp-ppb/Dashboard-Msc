@@ -92,6 +92,16 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
         currentTheme: action.theme
       }
     }
+    case AppActionTypes.ADD_VISUALIZATION: {
+      const visu = state.visualizations.map((item, j) => {
+         if(j=== state.currentLayer){
+           return [...item, action.vis ] 
+         } else {
+           return item;
+         }
+      });
+     return {...state, visualizations: visu}
+    }
     default:
       return state;
   }
