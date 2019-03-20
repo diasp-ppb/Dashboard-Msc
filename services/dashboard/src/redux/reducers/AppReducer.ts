@@ -21,6 +21,7 @@ const initialAppState : IAppState = {
           },
           splitPercentage: 40,
         },
+        name: "vci",
       },
       {
         currentNode: {
@@ -32,7 +33,17 @@ const initialAppState : IAppState = {
             second: 3,
           },
           splitPercentage: 40,
-        }
+        },
+        name: "Pombal"
+      },
+    {
+      currentNode: {
+        direction: 'row',
+        first: 1, 
+        second: 2,
+        splitPercentage: 40,
+      },
+      name: "Data Source"
     }
     ],
     currentTheme: 'Blueprint',
@@ -40,7 +51,8 @@ const initialAppState : IAppState = {
     currentLayer: 0,
     visualizations: [
       [],
-      []
+      [],
+      [],
     ],
     data: [],
 }

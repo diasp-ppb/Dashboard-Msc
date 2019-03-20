@@ -15,7 +15,7 @@ interface Props {
 
 class SideMenu extends React.Component<Props> {
   renderMenuLayers() {
-    return Object.keys(this.props.layers).map((_item, index) => {
+    return this.props.layers.map((item, index) => {
       return (
         <Button
           intent="primary"
@@ -23,7 +23,7 @@ class SideMenu extends React.Component<Props> {
           icon="presentation"
           key={index}
         >
-          {index}
+          {item.name}
         </Button>
       );
     });

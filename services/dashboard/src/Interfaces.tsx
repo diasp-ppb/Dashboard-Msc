@@ -54,6 +54,7 @@ export const EMPTY_ARRAY: any[] = [];
 
 export interface  LayerState {
     currentNode: MosaicNode<number> | null;
+    name: string;
 }
 
 export interface VisualizationConfig {

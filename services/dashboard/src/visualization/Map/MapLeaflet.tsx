@@ -9,9 +9,9 @@ import 'leaflet/dist/leaflet.css'
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 
-import data from '../../pombal';
+//import data from '../../pombal';
 
-var dataGeo:FeatureCollection<Geometry,GeoJsonProperties> = data;
+//var dataGeo:FeatureCollection<Geometry,GeoJsonProperties> = data;
 
 
 // Set your mapbox access token here
@@ -47,8 +47,6 @@ class MapLeaflet extends React.Component<Props,State> {
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
         />
 
-
-        <GeoJSON data={dataGeo} />
       </Map>
      
     );
@@ -57,3 +55,8 @@ class MapLeaflet extends React.Component<Props,State> {
 
 
 export default MapLeaflet;
+
+
+
+
+        //<GeoJSON data={dataGeo} />
