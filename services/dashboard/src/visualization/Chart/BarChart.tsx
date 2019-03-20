@@ -3,8 +3,6 @@ import {
   BarChart as BarChrt, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 
-import types from 'recharts'
-
 interface Props {
   width: number,
   height: number,
@@ -42,8 +40,8 @@ class BarChart extends React.Component <Props, Config> {
       
       return (
         <BarChrt
-          width={this.props.height}
-          height={this.props.width}
+          width={this.props.width}
+          height={this.props.height}
           data={this.props.data}
           margin={{
             top: 5, right: 30, left: 20, bottom: 5,

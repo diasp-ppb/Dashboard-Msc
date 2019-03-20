@@ -1,18 +1,7 @@
-import { Classes, Divider, H4 } from '@blueprintjs/core';
 import React from 'react';
 
-import {
-  Button,
-  Drawer,
-  ButtonGroup,
-} from "@blueprintjs/core";
 
-import {
-  IAppState,
-  Theme,
-  VisualizationConfig,
-  THEMES,
-} from './Interfaces';
+import { IAppState } from './Interfaces';
 
 import { Dispatch } from 'redux';
 

@@ -1,6 +1,6 @@
 import { ActionCreator, Dispatch } from 'redux';
 import { MosaicNode } from 'react-mosaic-component';
-import { Theme, VisualizationConfig } from '../../Interfaces';
+import { Theme, VisualizationConfig, DataConfig } from '../../Interfaces';
 
 
 export enum AppActionTypes {
@@ -12,6 +12,8 @@ export enum AppActionTypes {
     UPDATE_WINDOWS_ARRANGEMENT = 'UPDATE_WINDOWS_ARRANGEMENT',
     CHANGE_THEME = 'CHANGE_THEME',
     ADD_VISUALIZATION = 'ADD_VISUALIZATION',
+    ADD_DATA_CONFIG = 'ADD_DATA_CONFIG',
+    UPDATE_DATA = 'UPDATE_DATA'
 }
 
 export interface IAppAddLayer{
@@ -47,9 +49,20 @@ export interface IAppAddVisualization {
     vis: VisualizationConfig,
 }
 
+export interface IAppAddDataConfig {
+    type: AppActionTypes.ADD_DATA_CONFIG,
+    dataConfig: DataConfig,
+}
+
+export interface IAppDataUpdate {
+    type: AppActionTypes.UPDATE_DATA
+    dataId: string,
+    data: any,
+}
+
 export type AppAction = IAppAddLayer | IAppRemoveLayer | IAppOpenDrawer | 
                      IAppCloseDrawer | IAppSelectLayer | IAppUpdateWindowArrangement |
-                     IAppChangeTheme | IAppAddVisualization;
+                     IAppChangeTheme | IAppAddVisualization | IAppAddDataConfig | IAppDataUpdate;
 
 export function addLayer() {
     return {
@@ -96,6 +109,21 @@ export function addVisualization(vis: VisualizationConfig) {
     return {
         type: AppActionTypes.ADD_VISUALIZATION,
         vis: vis,
+    }
+}
+
+export function addDataConfig(dataConfig: DataConfig){
+    return {
+        type: AppActionTypes.ADD_DATA_CONFIG,
+        dataConfig: dataConfig
+    }
+}
+
+export function updateData(dataId:string, data:any) {
+    return {
+        type: AppActionTypes.UPDATE_DATA,
+        dataId:dataId,
+        data: data,
     }
 }
 

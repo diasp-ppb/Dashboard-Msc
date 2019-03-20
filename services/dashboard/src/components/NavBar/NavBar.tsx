@@ -7,17 +7,14 @@ import {
     getNodeAtPath,
     getOtherDirection,
     getPathToCorner,
-    Mosaic,
     MosaicDirection,
     MosaicNode,
     MosaicParent,
-    MosaicWindow,
-    MosaicZeroState,
     updateTree,
   } from 'react-mosaic-component';
 import { dropRight } from 'lodash';
 import { LayerState, Theme, IAppState, THEMES } from '../../Interfaces';
-import { openDrawer, changeTheme } from '../../redux/actions/AppActions';
+import { openDrawer, changeTheme, updateWindowArrangement } from '../../redux/actions/AppActions';
 import { connect } from 'react-redux';
 import { Navbar, Button, ButtonGroup, NavbarGroup, NavbarDivider, NavbarHeading, HTMLSelect, Classes } from '@blueprintjs/core';
 import classNames from 'classnames';
@@ -25,10 +22,10 @@ import classNames from 'classnames';
 interface Props {
   theme: Theme,
   currentLayer: LayerState,
+  layerId: number,
   openDrawer: Function,
   changeTheme: Function,
   updateWindowArrangement: Function,
-  layerId: number,
 }
 
 class NavBar extends React.Component<Props> {
@@ -37,6 +34,7 @@ class NavBar extends React.Component<Props> {
     
         let { currentNode } = this.props.currentLayer;
         let windowCount = getLeaves(currentNode).length;
+
         if (currentNode) {
           const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
           const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<number>;
@@ -71,6 +69,14 @@ class NavBar extends React.Component<Props> {
         this.props.updateWindowArrangement(this.props.layerId,currentNode);
 
       };
+
+
+      autoArrange = () => {
+        const leaves = getLeaves(this.props.currentLayer.currentNode);
+        let newNode = createBalancedTreeFromLeaves(leaves);
+        this.props.updateWindowArrangement(this.props.layerId, newNode);
+      };
+
 
 
       private renderNavBar() {
@@ -143,7 +149,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     const layerId = store.currentLayer;
     return {
       layerId: layerId,
-      layerState: store.layers[layerId],
+      currentLayer: store.layers[layerId],
     };
   };
   

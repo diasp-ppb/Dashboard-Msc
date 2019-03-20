@@ -1,6 +1,6 @@
 import React from 'react'
 import { VisualizationProps } from '../Interfaces';
-import Map from './Map/Map'
+import MapLeaflet from './Map/MapLeaflet'
 import {VisualizationsAvailable} from '../Interfaces'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
@@ -25,7 +25,7 @@ class Visualization extends React.Component<VisualizationProps> {
           />
         : 
         (type === VisualizationsAvailable[1].type) ?
-        <Map
+        <MapLeaflet
           width={this.props.width}
           height={this.props.height}
         />

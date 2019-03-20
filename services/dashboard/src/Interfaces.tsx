@@ -79,10 +79,19 @@ export interface VisualizationProps {
     visualizationConfig: VisualizationConfig,
 }
 
+export interface DataConfig {
+    dataId: string,
+    apiEndpoint?: {
+        route: string,
+    },
+    data: any,
+}
+
 export interface IAppState {
     layers: LayerState[],
     currentTheme: Theme;
     isOpen: boolean,
     currentLayer: number;
-    visualizations: VisualizationConfig[][]
+    visualizations: VisualizationConfig[][];
+    data: DataConfig[];
 }

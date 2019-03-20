@@ -41,7 +41,8 @@ const initialAppState : IAppState = {
     visualizations: [
       [],
       []
-    ]
+    ],
+    data: [],
 }
 
 export const AppReducer: Reducer<IAppState, AppAction> = (
@@ -101,6 +102,22 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
          }
       });
      return {...state, visualizations: visu}
+    }
+    case AppActionTypes.ADD_DATA_CONFIG: {
+       let dataConfig =  action.dataConfig
+       let data = {...state.data, dataConfig};
+       return {...state, data: data};
+    }
+    case AppActionTypes.UPDATE_DATA: {
+      const data = state.data.map((item, j) =>  {
+        if(item.dataId === action.dataId)
+        {
+          return {...item, data: action.data}
+        } else {
+          return item;
+        }
+      })
+      return {...state, data:data}
     }
     default:
       return state;

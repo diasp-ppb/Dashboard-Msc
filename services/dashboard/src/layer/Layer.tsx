@@ -1,26 +1,14 @@
 import React from 'react'
-import dropRight from 'lodash/dropRight';
-import classNames from 'classnames';
-import { Classes, HTMLSelect } from '@blueprintjs/core';
 import { openDrawer, updateWindowArrangement, changeTheme, addVisualization } from '../redux/actions/AppActions';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import {
-    Corner,
-    createBalancedTreeFromLeaves,
-    getLeaves,
-    getNodeAtPath,
-    getOtherDirection,
-    getPathToCorner,
     Mosaic,
-    MosaicDirection,
     MosaicNode,
-    MosaicParent,
     MosaicWindow,
     MosaicZeroState,
-    updateTree,
   } from 'react-mosaic-component';
 
 import {
@@ -34,17 +22,13 @@ import {
 
 
 import {
-    Button,
-    Navbar,
-    NavbarDivider,
-    NavbarGroup,
-    NavbarHeading,
-    ButtonGroup
+    Button
   } from "@blueprintjs/core";
 
 import Visualization from '../visualization/Visualization'
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
+import NavBar from '../components/NavBar/NavBar';
 
 
 interface Props {
@@ -87,12 +71,6 @@ class Layer extends React.Component<Props, State> {
     
       _createNode = () => ++windowCount;
     
-    autoArrange = () => {
-        const leaves = getLeaves(this.props.layerState.currentNode);
-        let newNode = createBalancedTreeFromLeaves(leaves);
-        this.props.updateWindowArrangement(this.props.id, newNode);
-      };
-
 
     
 
@@ -106,8 +84,8 @@ class Layer extends React.Component<Props, State> {
         return (  
         <Visualization
           visualizationConfig={vis}
-          height={width}
-          width={height}
+          height={height}
+          width={width}
           />);
       }
       
@@ -125,7 +103,9 @@ class Layer extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                {this.renderNavBar()}
+                <NavBar
+                  theme={this.props.theme}
+                />
                 <Mosaic<number>
                 renderTile={(count, path) => (
                
@@ -140,9 +120,9 @@ class Layer extends React.Component<Props, State> {
              >
                      <ContainerDimensions>
                      { ({ width, height }) => 
-                       <div className="example-window">
-                       {this.getVisualization(count, width *0.8 , height * 0.8 )}
-                      </div>
+                       <div className="example-window" style={{height: height, width: width}}>
+                       {this.getVisualization(count, width * 0.95, height * 0.95)}
+                       </div>
                     }
                      </ContainerDimensions>
                
