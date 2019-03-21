@@ -54,7 +54,19 @@ const initialAppState : IAppState = {
       [],
       [],
     ],
-    data: [],
+    data: [
+      {
+        dataId: "vci",
+        data:{}
+      },
+      {
+        dataId: "vci2",
+        apiEndpoint: {
+          route: "/teste/dontWork"
+        },
+        data:{}
+      }
+    ],
 }
 
 export const AppReducer: Reducer<IAppState, AppAction> = (

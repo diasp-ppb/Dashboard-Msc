@@ -4,7 +4,7 @@ import ConfigurationSelector from './selectors/ConfigurationSelector'
 import VisualizationSelector from './selectors/VisualizationSelector'
 import {Dialog, Navbar, Tab, Tabs, Button, ButtonGroup ,Alignment} from "@blueprintjs/core";
 import { Classes } from '@blueprintjs/core';
-import { VisualizationsAvailable, VisualizationAvailable, VisualizationConfig } from "../../Interfaces"
+import { Visualization_Types, VisualizationConfig } from "../../Interfaces"
 
 interface VisualizationWizardProps {
     isOpen: boolean,
@@ -29,7 +29,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
         vertical: false,
         navbarTabId: "visualization",
         visualizationConfig: {
-            type: VisualizationsAvailable[0],
+            type: Visualization_Types.BAR_CHART,
             data: {},
             nodeId: -1,
             xAxis: false,
@@ -57,7 +57,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
                      : <DataSelector />;
     }
 
-    selectVisualization = (item: VisualizationAvailable) => { 
+    selectVisualization = (item: Visualization_Types) => { 
         this.setState( (state) => 
             {
                 let visualizationConfig = {...state.visualizationConfig, type: item}

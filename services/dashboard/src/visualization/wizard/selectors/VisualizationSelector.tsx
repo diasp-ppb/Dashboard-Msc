@@ -1,46 +1,35 @@
 import React from 'react'
 
-import {
-filterVisualization,
-renderVisualization,
-VisualizationsAvailable,
-VisualizationAvailable
-} from "../../../Interfaces"
-
-import { Select } from "@blueprintjs/select";
+import {Visualization_Types} from "../../../Interfaces"
 
 import { 
     FormGroup,
-    Button
+    HTMLSelect
  } from "@blueprintjs/core";
 
 interface Props {
-    visualizationSelected: VisualizationAvailable,
+    visualizationSelected: Visualization_Types,
     selectVisualization: Function,
 }
 
 class VisualizationSelector extends React.Component<Props> {
 
+    typesToArray() {
+        let types = [];
+        for( let type in Visualization_Types){
+            types.push(type);
+        };
+        return types;
+    }
 
     render() {
-        const VisualizationSelect = Select.ofType<VisualizationAvailable>();
-
+        let types = this.typesToArray();
         return (
         <FormGroup>
         <h3>Visualization Wizzard</h3>
-        <VisualizationSelect
-                items={VisualizationsAvailable}
-                itemPredicate={filterVisualization}
-                itemRenderer={renderVisualization}
-                onItemSelect={ (item) => {this.props.selectVisualization(item);} }
-                filterable={false}
-                >
-                <Button
-                    icon="gantt-chart"
-                    rightIcon="caret-down"
-                    text={this.props.visualizationSelected ? `${this.props.visualizationSelected.type}` : "(No selection)"}
-                />
-        </VisualizationSelect>
+        <div> 
+            <HTMLSelect options={types} defaultValue={types[0]} onChange={ (event) => { console.log(  event.currentTarget.value );  this.props.selectVisualization(event.currentTarget.value)}}/> 
+        </div> 
         </FormGroup>
         );
     }
