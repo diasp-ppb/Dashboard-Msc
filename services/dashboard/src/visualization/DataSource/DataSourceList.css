@@ -1,3 +1,7 @@
 .bp3-html-table.bp3-html-table-bordered.bp3-html-table-striped {
     width: 100%;
 }
+
+.bp3-editable-text.bp3-editable-text-placeholder {
+    width: 100%;
+}

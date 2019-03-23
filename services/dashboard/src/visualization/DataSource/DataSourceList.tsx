@@ -1,5 +1,5 @@
 import React  from 'react';
-import { Button, Divider, ButtonGroup,  ControlGroup, HTMLTable, H6, H4, Classes } from '@blueprintjs/core';
+import { Button, EditableText, ButtonGroup, HTMLTable, Classes } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState, DataConfig } from '../../Interfaces';
@@ -10,8 +10,11 @@ interface Props {
     items: DataConfig[];
 }
 
+
 class DataSourceList extends React.Component<Props> {
-    
+ 
+
+
     cellsRenderer = () => {
         return this.props.items.map ( (item, index) => {
             return <tr key={index}>
@@ -34,6 +37,25 @@ class DataSourceList extends React.Component<Props> {
                    </tr>
         })
     }
+    newCellRenderer = () => {
+        return <tr>
+                 <td>
+                     <EditableText  onChange={(value) => this.setState( {dataId: value })}/>
+                 </td>
+                 <td>
+                     <EditableText  onChange={(value) => this.setState( {route: value })}/>
+                 </td>
+                 <td>
+                     <ButtonGroup minimal={true} vertical={false}>    
+                        <Button icon="plus" onClick={this.addNewEntry}/>   
+                     </ButtonGroup>
+                 </td>
+               </tr>
+    }
+
+    addNewEntry = () =>  {
+
+    }
     
     render() {
         return <HTMLTable className={classNames(Classes.HTML_TABLE_BORDERED, Classes.HTML_TABLE_STRIPED, Classes.HTML_TABLE)}>
@@ -47,6 +69,7 @@ class DataSourceList extends React.Component<Props> {
 
                 <tbody>
                     {this.cellsRenderer()}
+                    {this.newCellRenderer()}
                 </tbody>
                 
               </HTMLTable>
