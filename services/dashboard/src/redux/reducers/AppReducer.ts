@@ -129,7 +129,7 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
     }
     case AppActionTypes.ADD_DATA_CONFIG: {
        let dataConfig =  action.dataConfig
-       let data = {...state.data, dataConfig};
+       let data = [...state.data, dataConfig];
        return {...state, data: data};
     }
     case AppActionTypes.UPDATE_DATA: {

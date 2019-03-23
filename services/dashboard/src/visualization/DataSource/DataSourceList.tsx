@@ -5,15 +5,28 @@ import { Dispatch } from 'redux';
 import { IAppState, DataConfig } from '../../Interfaces';
 import classNames from 'classnames';
 import './DataSourceList.css'
+import { addDataConfig } from '../../redux/actions/AppActions';
 
 interface Props {
     items: DataConfig[];
+    addDataConfig: Function;
 }
 
+interface State {
+    dataId: string,
+    route: string,
+    data: any,
+}
 
-class DataSourceList extends React.Component<Props> {
+const DEFAULT_VALUE = "";
+
+class DataSourceList extends React.Component<Props, State> {
  
-
+    state = {
+        dataId: DEFAULT_VALUE,
+        route: DEFAULT_VALUE,
+        data: DEFAULT_VALUE,
+    }
 
     cellsRenderer = () => {
         return this.props.items.map ( (item, index) => {
@@ -55,6 +68,32 @@ class DataSourceList extends React.Component<Props> {
 
     addNewEntry = () =>  {
 
+        if(this.state.dataId != DEFAULT_VALUE && this.state.route != DEFAULT_VALUE) {
+            let newEntry:DataConfig = {
+                dataId: this.state.dataId,
+                apiEndpoint: {
+                    route: this.state.route
+                },
+                data: {}
+            }
+            this.props.addDataConfig(newEntry);
+        } else
+        if(this.state.dataId != DEFAULT_VALUE && this.state.data != DEFAULT_VALUE)
+        {
+            let newEntry:DataConfig = {
+                dataId: this.state.dataId,
+                data: this.state.data,
+            }
+            this.props.addDataConfig(newEntry);
+
+        }
+    }
+    resetState = () => {
+        this.setState({
+            dataId: DEFAULT_VALUE,
+            data: DEFAULT_VALUE,
+            route: DEFAULT_VALUE,
+        })
     }
     
     render() {
@@ -79,8 +118,10 @@ class DataSourceList extends React.Component<Props> {
     }
 }   
 
-  const mapDispatchToProps = (_dispatch: Dispatch) => {
-    return {}
+  const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        addDataConfig: (newEntry: DataConfig) => dispatch(addDataConfig(newEntry))
+    }
   };
 
   const mapStateToProps = (store: IAppState) => {
