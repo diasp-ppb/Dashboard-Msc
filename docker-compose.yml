@@ -1,0 +1,53 @@
+version: '3'
+
+services: 
+  dashboard:
+    build: ./services/dashboard
+    command: nodemon start
+    container_name: dashboard
+    ports: 
+      - '3000:3000'
+    volumes:
+      - ./services/dashboard:/usr/src/app
+  vci-db: 
+    image: kartoza/postgis:latest
+    container_name: vci-db
+    ports:
+      - '5432:5432' 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=vci
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+ 
+
+  pgadmin: 
+    image: dpage/pgadmin4
+    container_name: vci-pgadmin
+    depends_on: 
+      - vci-db
+    ports: 
+      - '5555:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    restart: unless-stopped
+
+
+  vci-api:
+    build: ./services/vci
+    container_name: vci_api
+    command: nodemon ./server.js
+    ports: 
+      - '3001:3001' 
+    environment:
+      - NODE_ENV=development
+    volumes: 
+      - ./services/vci:/usr/src/app
+   
+
+
+volumes:
+  postgres-data:
+

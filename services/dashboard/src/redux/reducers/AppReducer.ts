@@ -133,7 +133,7 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
        return {...state, data: data};
     }
     case AppActionTypes.UPDATE_DATA: {
-      const data = state.data.map((item, j) =>  {
+      const data = state.data.map((item, _j) =>  {
         if(item.dataId === action.dataId)
         {
           return {...item, data: action.data}
