@@ -1,5 +1,6 @@
+.gitignore
+
+node_modules
+
 ./postgres-data
 
-./services/dashboard/node_modules
-
-./services/vci/node_modules
