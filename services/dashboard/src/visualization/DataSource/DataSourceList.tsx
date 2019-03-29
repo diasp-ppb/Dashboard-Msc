@@ -6,7 +6,7 @@ import { IAppState, DataConfig } from '../../Interfaces';
 import classNames from 'classnames';
 import './DataSourceList.css'
 import { addDataConfig } from '../../redux/actions/AppActions';
-
+import { api } from '../../data/Data';
 interface Props {
     items: DataConfig[];
     addDataConfig: Function;
@@ -28,6 +28,7 @@ class DataSourceList extends React.Component<Props, State> {
         data: DEFAULT_VALUE,
     }
 
+    //TODO BUTTONS FUNCTIONS    
     cellsRenderer = () => {
         return this.props.items.map ( (item, index) => {
             return <tr key={index}>
@@ -39,17 +40,28 @@ class DataSourceList extends React.Component<Props, State> {
                      </td>
                      <td>   
                         <ButtonGroup minimal={true} vertical={false}>
-                           
-                            <Button icon="edit"/>   
-                            
                             <Button icon="delete" />
-                          
                         </ButtonGroup>
                      </td>
 
                    </tr>
         })
     }
+
+    fetchData = () => {
+        if(this.state.route == DEFAULT_VALUE) return;
+
+        api<any>(this.state.route)
+        .then( (data:any) => {
+            console.log(data);
+            this.setState(data);
+        })
+        .catch((error: Error) => {
+            console.log(error) //TOAST DISPATCH TO USER
+        })
+    }
+
+
     newCellRenderer = () => {
         return <tr>
                  <td>
@@ -60,7 +72,8 @@ class DataSourceList extends React.Component<Props, State> {
                  </td>
                  <td>
                      <ButtonGroup minimal={true} vertical={false}>    
-                        <Button icon="plus" onClick={this.addNewEntry}/>   
+                        <Button icon="plus" onClick={this.addNewEntry}/> 
+                        <Button icon="arrow-down" onClick={this.fetchData}/>                            
                      </ButtonGroup>
                  </td>
                </tr>
@@ -68,7 +81,7 @@ class DataSourceList extends React.Component<Props, State> {
 
     addNewEntry = () =>  {
 
-        if(this.state.dataId != DEFAULT_VALUE && this.state.route != DEFAULT_VALUE) {
+        if(this.state.dataId != DEFAULT_VALUE && this.state.route != DEFAULT_VALUE && this.state.data != DEFAULT_VALUE) {
             let newEntry:DataConfig = {
                 dataId: this.state.dataId,
                 apiEndpoint: {
