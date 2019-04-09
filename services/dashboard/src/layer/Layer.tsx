@@ -120,7 +120,7 @@ class Layer extends React.Component<Props, State> {
                 path={path}
                 onDragStart={() => console.log('MosaicWindow.onDragStart')}
                 onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
-                renderToolbar={count === 2 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
+                renderToolbar={count === 6 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
              >
                      <ContainerDimensions>
                      { ({ width, height }) => 

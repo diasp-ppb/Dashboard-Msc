@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
+import { PersistGate } from 'redux-persist/integration/react'
 
 import { IAppState } from './Interfaces';
 import configureStore from './redux/store/Store';
@@ -16,16 +17,19 @@ interface IProps {
 }
 
 
+const {store,persistor} = configureStore();
+
+
 const Root: React.SFC<IProps> = props => {
     return (
       <Provider store={props.store}>
+        <PersistGate loading={null} persistor={persistor}> 
         <App />
+        </PersistGate>
       </Provider>
     );
   };
 
-
-const store = configureStore();
 
 ReactDOM.render(<Root store={store}/>, document.getElementById('root'));
 
