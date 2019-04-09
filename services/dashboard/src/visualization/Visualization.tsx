@@ -11,7 +11,7 @@ class Visualization extends React.Component<VisualizationProps> {
 
     getComponent() {
       let type = this.props.visualizationConfig.type;
-      let data = this.props.visualizationConfig.data;
+      let data = this.props.data;
       switch (type) {
         case Visualization_Types.BAR_CHART: {
           return <BarChart

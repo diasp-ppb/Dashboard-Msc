@@ -15,17 +15,17 @@ interface Props {
 interface State {
     dataId: string,
     route: string,
-    data: any,
+    data: any[],
 }
 
 const DEFAULT_VALUE = "";
-
+const EMPTY_ARRAY: [] = [];
 class DataSourceList extends React.Component<Props, State> {
  
     state = {
         dataId: DEFAULT_VALUE,
         route: DEFAULT_VALUE,
-        data: DEFAULT_VALUE,
+        data: EMPTY_ARRAY,
     }
 
     //TODO BUTTONS FUNCTIONS    
@@ -53,8 +53,9 @@ class DataSourceList extends React.Component<Props, State> {
 
         api<any>(this.state.route)
         .then( (data:any) => {
-            console.log(data);
-            this.setState(data);
+            console.log(Array.isArray(data));
+            let dataArray = JSON.parse(data);
+            this.setState({data: dataArray});
         })
         .catch((error: Error) => {
             console.log(error) //TOAST DISPATCH TO USER
@@ -81,17 +82,17 @@ class DataSourceList extends React.Component<Props, State> {
 
     addNewEntry = () =>  {
 
-        if(this.state.dataId != DEFAULT_VALUE && this.state.route != DEFAULT_VALUE && this.state.data != DEFAULT_VALUE) {
+        if(this.state.dataId !== DEFAULT_VALUE && this.state.route !== DEFAULT_VALUE) {
             let newEntry:DataConfig = {
                 dataId: this.state.dataId,
                 apiEndpoint: {
                     route: this.state.route
                 },
-                data: {}
+                data: this.state.data
             }
             this.props.addDataConfig(newEntry);
         } else
-        if(this.state.dataId != DEFAULT_VALUE && this.state.data != DEFAULT_VALUE)
+        if(this.state.dataId !== DEFAULT_VALUE && this.state.data !== EMPTY_ARRAY)
         {
             let newEntry:DataConfig = {
                 dataId: this.state.dataId,
@@ -104,7 +105,7 @@ class DataSourceList extends React.Component<Props, State> {
     resetState = () => {
         this.setState({
             dataId: DEFAULT_VALUE,
-            data: DEFAULT_VALUE,
+            data: EMPTY_ARRAY,
             route: DEFAULT_VALUE,
         })
     }

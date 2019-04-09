@@ -14,7 +14,7 @@ class ConfigurationSelector extends React.Component<Props> {
 
     renderConfigDisplayer() {
         let type = this.props.config.type;
-
+        console.log(type, Visualization_Types.BAR_CHART);
         switch(type) {
             
             case Visualization_Types.BAR_CHART:
@@ -26,7 +26,8 @@ class ConfigurationSelector extends React.Component<Props> {
             case Visualization_Types.LINE_CHART: 
                 return <LineChartConfiguration updateConfig={this.props.updateConfig} config={this.props.config} />;
             
-            default: null
+            default: 
+                return <p> The selected visualizations does not have an ConfigurationSelector </p>
         }
 
     }

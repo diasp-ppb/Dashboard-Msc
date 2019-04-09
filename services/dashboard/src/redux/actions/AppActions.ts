@@ -105,7 +105,6 @@ export function changeTheme(theme: Theme ) {
 }
 
 export function addVisualization(vis: VisualizationConfig) {
-    vis.data = dataExample;
     return {
         type: AppActionTypes.ADD_VISUALIZATION,
         vis: vis,
@@ -127,7 +126,7 @@ export function updateData(dataId:string, data:any) {
     }
 }
 
-
+//TODO REMOVE 
 const dataExample = [
     {
       name: 'Page A', uv: 4000, pv: 2400, amt: 2400,

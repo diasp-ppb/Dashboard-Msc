@@ -18,6 +18,7 @@ import {
     Theme,
     VisualizationConfig,
     IAppState,
+    DataConfig,
     } from '../Interfaces'
 
 
@@ -40,6 +41,7 @@ interface Props {
   openDrawer: Function,
   updateWindowArrangement: Function,
   id: number,
+  data: DataConfig[],
 }
 
 let windowCount = 3;
@@ -57,8 +59,13 @@ class Layer extends React.Component<Props, State> {
     nodeInFocus: -1,
   }
 
+  getData = (dataId: string) =>  {
+     return this.props.data.find(function(item:DataConfig) {
+      return item.dataId === dataId;
+     })
+  }
 
-  private handleOpen = (id: number) => this.setState({ visualizationWizzard: true, nodeInFocus: id});
+   handleOpen = (id: number) => this.setState({ visualizationWizzard: true, nodeInFocus: id});
 
 
       _onChange = (currentNode: MosaicNode<number> | null) => {
@@ -70,20 +77,17 @@ class Layer extends React.Component<Props, State> {
       };
     
       _createNode = () => ++windowCount;
-    
-
-    
-
-
      
     
     getVisualization(id:Number, width:number, height:number) {
       let vis = this.props.visualizations.find( item => item.nodeId === id)
       if (vis != undefined)
       {
+        let data = this.getData(vis.dataId);
         return (  
         <Visualization
           visualizationConfig={vis}
+          data={data}
           height={height}
           width={width}
           />);
@@ -158,7 +162,8 @@ const mapStateToProps = (store: IAppState) => {
   return {
     id: layerId,
     layerState: store.layers[layerId],
-    visualizations: store.visualizations[layerId]
+    visualizations: store.visualizations[layerId],
+    data: store.data,
   };
 };
 

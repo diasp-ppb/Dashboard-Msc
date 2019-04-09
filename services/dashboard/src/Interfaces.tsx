@@ -27,7 +27,7 @@ export interface  LayerState {
 
 export interface VisualizationConfig {
     type: Visualization_Types,
-    data: any,
+    dataId: string,
     nodeId: number,
     xAxis?: boolean,
     yAxis?: boolean,
@@ -45,6 +45,7 @@ export interface VisualizationConfig {
 export interface VisualizationProps {
     height: number,
     width: number,
+    data: any,
     visualizationConfig: VisualizationConfig,
 }
 
