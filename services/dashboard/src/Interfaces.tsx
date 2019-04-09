@@ -12,6 +12,7 @@ export const THEMES = {
 export enum Visualization_Types {
     BAR_CHART = 'BAR_CHART',
     MAP_DECK_GL = 'MAP_DECK_GL',
+    MAP_LEAFLET = 'MAP_LEAFLET',
     LINE_CHART = 'LINE_CHART',
     DATA_SOURCES = 'DATA_SOURCES',
 }

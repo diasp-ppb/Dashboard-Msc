@@ -4,6 +4,7 @@ import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
+import MapDeckGL from './Map/MapDeckGL';
 
 
 class Visualization extends React.Component<VisualizationProps> {
@@ -25,14 +26,16 @@ class Visualization extends React.Component<VisualizationProps> {
             legend={this.props. visualizationConfig.legend || false}
           />
         }
-
-        case Visualization_Types.MAP_DECK_GL: {
+        case Visualization_Types.MAP_LEAFLET: {
           return <MapLeaflet
           width={this.props.width}
           height={this.props.height}
-          />
+          /> 
         }
-
+        case Visualization_Types.MAP_DECK_GL: {
+          return <MapDeckGL/> 
+        }
+        
         case Visualization_Types.LINE_CHART: {
           return  <LineChart 
           width={this.props.width}
