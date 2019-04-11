@@ -1,22 +1,14 @@
 import React from 'react'
-import dropRight from 'lodash/dropRight';
-import classNames from 'classnames';
-import { Classes, HTMLSelect } from '@blueprintjs/core';
+import { openDrawer, updateWindowArrangement, changeTheme, addVisualization } from '../redux/actions/AppActions';
+
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import {
-    Corner,
-    createBalancedTreeFromLeaves,
-    getLeaves,
-    getNodeAtPath,
-    getOtherDirection,
-    getPathToCorner,
     Mosaic,
-    MosaicDirection,
     MosaicNode,
-    MosaicParent,
     MosaicWindow,
     MosaicZeroState,
-    updateTree,
   } from 'react-mosaic-component';
 
 import {
@@ -24,41 +16,41 @@ import {
     LayerState,
     EMPTY_ARRAY,
     Theme,
-    VisualizationConfig
+    VisualizationConfig,
+    IAppState,
+    DataConfig,
     } from '../Interfaces'
 
 
 import {
-    Button,
-    Navbar,
-    NavbarDivider,
-    NavbarGroup,
-    NavbarHeading,
-    ButtonGroup
+    Button
   } from "@blueprintjs/core";
 
 import Visualization from '../visualization/Visualization'
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
+import NavBar from '../components/navbar/NavBar';
 
 
 interface Props {
   theme: Theme,
   layerState: LayerState,
-  updateTree: Function,
-  drawerToggle: Function,
   visualizations: VisualizationConfig[],
-  setTheme: Function,
+  changeTheme: Function,
   addVisualization: Function,
+  openDrawer: Function,
+  updateWindowArrangement: Function,
+  id: number,
+  data: DataConfig[],
 }
-
-let windowCount = 3;
-
 
 interface State {
   visualizationWizzard:  boolean,
   nodeInFocus: number,
 }
+
+let windowCount  = 1; //check createNode
+
 
 class Layer extends React.Component<Props, State> {
     
@@ -67,129 +59,37 @@ class Layer extends React.Component<Props, State> {
     nodeInFocus: -1,
   }
 
+  getData = (dataId: string) =>  {
+     return this.props.data.find(function(item:DataConfig) {
+      return item.dataId === dataId;
+     })
+  }
 
-  private handleOpen = (id: number) => this.setState({ visualizationWizzard: true, nodeInFocus: id});
+   handleOpen = (id: number) => this.setState({ visualizationWizzard: true, nodeInFocus: id});
 
 
       _onChange = (currentNode: MosaicNode<number> | null) => {
-        this.props.updateTree(currentNode);
+        this.props.updateWindowArrangement(this.props.id, currentNode);
       };
     
       _onRelease = (currentNode: MosaicNode<number> | null) => {
         console.log('Mosaic.onRelease():', currentNode);
       };
     
-      _createNode = () => ++windowCount;
-    
-    autoArrange = () => {
-        const leaves = getLeaves(this.props.layerState.currentNode);
-        let newNode = createBalancedTreeFromLeaves(leaves);
-        this.props.updateTree(newNode);
-      };
-
-
-    addToTopRight = () => {
-    
-        let { currentNode } = this.props.layerState;
-    
-        if (currentNode) {
-          const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
-          const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<number>;
-          const destination = getNodeAtPath(currentNode, path) as MosaicNode<number>;
-          const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : 'row';
-    
-          let first: MosaicNode<number>;
-          let second: MosaicNode<number>;
-          if (direction === 'row') {
-            first = destination;
-            second = ++windowCount;
-          } else {
-            first = ++windowCount;
-            second = destination;
-          }
-    
-          currentNode = updateTree(currentNode, [
-            {
-              path,
-              spec: {
-                $set: {
-                  direction,
-                  first,
-                  second,
-                },
-              },
-            },
-          ]);
-        } else {
-          currentNode = ++windowCount;
-        }
-        this.props.updateTree(currentNode);
-
-      };
-
-      private handleDrawer = () => this.props.drawerToggle();
-
-      private renderNavBar() {
-        return (
-          <Navbar className={classNames(Classes.DARK)}>
-            <NavbarGroup>
-             <Button 
-              icon="menu"
-              onClick={this.handleDrawer}
-             />
-            
-             <NavbarDivider />
-
-            
-              <NavbarHeading>
-                  <a href="localhost:3001">
-                    Urban Dash
-                  </a>
-                </NavbarHeading>
-              </NavbarGroup>
-    
-            <NavbarGroup>
-              <ButtonGroup>
-                <HTMLSelect
-                    value={this.props.theme}
-                    onChange={(e) => this.props.setTheme(e.currentTarget.value as Theme)}
-                >
-                  {React.Children.toArray(Object.keys(THEMES).map((label) => <option>{label}</option>))}
-                </HTMLSelect>
-               
-              
-                <NavbarDivider />
-    
-                <Button 
-                  onClick={this.autoArrange}
-                  icon="grid-view" 
-                >
-                  Auto Arrange
-                </Button>
-    
-                <Button
-                  onClick={this.addToTopRight}
-                  icon="arrow-top-right"
-                >
-                  Add Window
-                </Button>
-              </ButtonGroup>
-            </NavbarGroup>
-    
-          </Navbar>
-         
-        );
-      }
+      _createNode = () => ++windowCount; //Do nothing onlythere because the layer lib requirement
+     
     
     getVisualization(id:Number, width:number, height:number) {
       let vis = this.props.visualizations.find( item => item.nodeId === id)
       if (vis != undefined)
       {
+        let data = this.getData(vis.dataId);
         return (  
         <Visualization
           visualizationConfig={vis}
-          height={width}
-          width={height}
+          data={data}
+          height={height}
+          width={width}
           />);
       }
       
@@ -207,7 +107,9 @@ class Layer extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                {this.renderNavBar()}
+                <NavBar
+                  theme={this.props.theme}
+                />
                 <Mosaic<number>
                 renderTile={(count, path) => (
                
@@ -218,13 +120,13 @@ class Layer extends React.Component<Props, State> {
                 path={path}
                 onDragStart={() => console.log('MosaicWindow.onDragStart')}
                 onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
-                renderToolbar={count === 2 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
+                renderToolbar={count === 6 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
              >
                      <ContainerDimensions>
                      { ({ width, height }) => 
-                       <div className="example-window">
-                       {this.getVisualization(count, width *0.8 , height * 0.8 )}
-                      </div>
+                       <div className="example-window" style={{height: height, width: width}}>
+                       {this.getVisualization(count, width * 0.95, height * 0.95)}
+                       </div>
                     }
                      </ContainerDimensions>
                
@@ -246,4 +148,25 @@ class Layer extends React.Component<Props, State> {
     }
 }
 
-export default Layer;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    openDrawer: () => dispatch(openDrawer()),
+    updateWindowArrangement: (layerId:number, currentNode: MosaicNode<number>)  => dispatch(updateWindowArrangement(layerId,currentNode)),
+    changeTheme: (theme: Theme) => dispatch(changeTheme(theme)),
+    addVisualization: (vis: VisualizationConfig) => dispatch(addVisualization(vis))
+  }
+};
+
+const mapStateToProps = (store: IAppState) => {
+  const layerId = store.currentLayer;
+  return {
+    id: layerId,
+    layerState: store.layers[layerId],
+    visualizations: store.visualizations[layerId],
+    data: store.data,
+  };
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Layer);
+

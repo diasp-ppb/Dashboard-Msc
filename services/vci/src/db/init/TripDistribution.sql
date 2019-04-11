@@ -1,3 +1,5 @@
+DROP tripdistribution;
+
 CREATE TABLE tripdistribution(
    Zona                VARCHAR(19) NOT NULL PRIMARY KEY
   ,Aliados             INTEGER  NOT NULL

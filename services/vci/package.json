@@ -10,7 +10,9 @@
   },
   "author": "",
   "dependencies": {
-    "express": "^4.16.4"
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "pg": "^7.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

@@ -1,19 +1,21 @@
 import React from 'react'
-import { VisualizationProps } from '../Interfaces';
-import Map from './Map/Map'
-import {VisualizationsAvailable} from '../Interfaces'
+import { VisualizationProps, Visualization_Types } from '../Interfaces';
+import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
+import DataSourceList from './DataSource/DataSourceList';
+import MapDeckGL from './Map/MapDeckGL';
 
 
 class Visualization extends React.Component<VisualizationProps> {
 
-    renderChart() {
-        let type = this.props.visualizationConfig.type.type;
-        let data = this.props.visualizationConfig.data;
 
-        let vis = (type === VisualizationsAvailable[0].type) ?
-          <BarChart
+    getComponent() {
+      let type = this.props.visualizationConfig.type;
+      let data = this.props.data;
+      switch (type) {
+        case Visualization_Types.BAR_CHART: {
+          return <BarChart
             width={this.props.width}
             height={this.props.height}
             xAxis={this.props.visualizationConfig.xAxis || false}
@@ -23,52 +25,54 @@ class Visualization extends React.Component<VisualizationProps> {
             bars={this.props.visualizationConfig.bars || []}
             legend={this.props. visualizationConfig.legend || false}
           />
-        : 
-        (type === VisualizationsAvailable[1].type) ?
-        <Map
+        }
+        case Visualization_Types.MAP_LEAFLET: {
+          return <MapLeaflet
           width={this.props.width}
           height={this.props.height}
-        />
-        : 
-        (type === VisualizationsAvailable[2].type) ?
-        <LineChart 
-        width={this.props.width}
-        height={this.props.height}
-        xAxis={true}
-        yAxis={true}
-        tooltip={true}
-        lines={
-          [
-            {
-              type: "monotone",
-              dataKey: "uv",
-              stroke: "#8884d8",
-            },
-            {
-              type: "monotone",
-              dataKey: "pv",
-              stroke: "#82ca9d"
-            }
-          ]
+          /> 
         }
-        data={data}/> 
-
-        : null
-
-        ;
+        case Visualization_Types.MAP_DECK_GL: {
+          return <MapDeckGL/> 
+        }
         
-        return (
-            vis
-        );
+        case Visualization_Types.LINE_CHART: {
+          return  <LineChart 
+          width={this.props.width}
+          height={this.props.height}
+          xAxis={true}
+          yAxis={true}
+          tooltip={true}
+          lines={
+            [
+              {
+                type: "monotone",
+                dataKey: "uv",
+                stroke: "#8884d8",
+              },
+              {
+                type: "monotone",
+                dataKey: "pv",
+                stroke: "#82ca9d"
+              }
+            ]
+          }
+          data={data}/> 
+        }
+
+        case Visualization_Types.DATA_SOURCES: {
+          return <DataSourceList/> 
+        }
+
+        default: null
+      }
     }
 
     render() {
-        return (  
-                this.renderChart()    
-        );
+        return this.getComponent();  
+        
     }
 
 }
-
 
 export default Visualization;

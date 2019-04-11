@@ -4,7 +4,7 @@ import ConfigurationSelector from './selectors/ConfigurationSelector'
 import VisualizationSelector from './selectors/VisualizationSelector'
 import {Dialog, Navbar, Tab, Tabs, Button, ButtonGroup ,Alignment} from "@blueprintjs/core";
 import { Classes } from '@blueprintjs/core';
-import { VisualizationsAvailable, VisualizationAvailable, VisualizationConfig } from "../../Interfaces"
+import { Visualization_Types, VisualizationConfig } from "../../Interfaces"
 
 interface VisualizationWizardProps {
     isOpen: boolean,
@@ -21,26 +21,32 @@ interface State {
 
 }
 
+const initialState = {
+    activePanelOnly: false,
+    animate: true,
+    vertical: false,
+    navbarTabId: "visualization",
+    visualizationConfig: {
+        type: Visualization_Types.BAR_CHART,
+        dataId: "",
+        nodeId: -1,
+        xAxis: false,
+        yAxis: false,
+        cartesianGrid: {
+            active: false,
+            strokeDasharray: "3 3"
+        }
+    },
+}
+
+
 class VisualizationWizard extends React.Component<VisualizationWizardProps, State> {
 
-    state: State = {
-        activePanelOnly: false,
-        animate: true,
-        vertical: false,
-        navbarTabId: "visualization",
-        visualizationConfig: {
-            type: VisualizationsAvailable[0],
-            data: {},
-            nodeId: -1,
-            xAxis: false,
-            yAxis: false,
-            cartesianGrid: {
-                active: false,
-                strokeDasharray: "3 3"
-            }
-        },
-    }
+    state: State = initialState;
 
+    resetState  = () => {
+        this.setState(initialState); 
+    }
 
     handleNavbarTabChange = (navbarTabId: string) => this.setState({ navbarTabId });
 
@@ -53,11 +59,17 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
                      /> 
                      :  
                      panel === "configuration" ?  
-                     <ConfigurationSelector updateConfig={this.updateDataConfig} config={this.state.visualizationConfig}/> 
-                     : <DataSelector />;
+                     <ConfigurationSelector updateConfig={this.updateVisualizationConfig} config={this.state.visualizationConfig}/> 
+                     : <DataSelector selectData={this.selectDataId}/>;
     }
 
-    selectVisualization = (item: VisualizationAvailable) => { 
+    selectDataId = (item: string) => {
+        this.setState( (state) => {
+            let visualizationConfig = {...state.visualizationConfig, dataId: item}
+            return {...state, visualizationConfig};
+        })
+    } 
+    selectVisualization = (item: Visualization_Types) => { 
         this.setState( (state) => 
             {
                 let visualizationConfig = {...state.visualizationConfig, type: item}
@@ -69,10 +81,11 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
     
     handleAddVisualization = () => {
         this.props.addVisualization(this.state.visualizationConfig);
+        this.resetState();
         this.props.closeWizard();
     }
 
-    updateDataConfig = (visualizationConfig:any) => {
+    updateVisualizationConfig = (visualizationConfig:any) => {
         this.setState( {visualizationConfig: Object.assign(this.state.visualizationConfig, visualizationConfig)});
     }
 
