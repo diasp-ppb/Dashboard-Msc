@@ -43,20 +43,8 @@ class Visualization extends React.Component<VisualizationProps> {
           xAxis={true}
           yAxis={true}
           tooltip={true}
-          lines={
-            [
-              {
-                type: "monotone",
-                dataKey: "uv",
-                stroke: "#8884d8",
-              },
-              {
-                type: "monotone",
-                dataKey: "pv",
-                stroke: "#82ca9d"
-              }
-            ]
-          }
+          legend={false}
+          lines={this.props.visualizationConfig.lines || []}
           data={data}/> 
         }
 

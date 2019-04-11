@@ -11,6 +11,7 @@ interface Props {
   xAxis: boolean,
   yAxis: boolean, 
   tooltip: boolean,
+  legend: boolean,
   lines: LineConfig[],
   data: Array<any>,
 }
@@ -49,11 +50,7 @@ class LineChart extends React.Component <Props, Config> {
     );
   }
 
-  render(){
-
-      //Lines 
-
-      
+  render(){      
       return (
         <LineChrt
           width={this.props.width}
@@ -64,10 +61,10 @@ class LineChart extends React.Component <Props, Config> {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          {this.props.xAxis && <XAxis dataKey="name" />}
+          {this.props.yAxis && <YAxis /> }
+          {this.props.tooltip && <Tooltip /> }
+          {this.props.legend && <Legend />}
           {this._addLines()}
         </LineChrt>
       );
