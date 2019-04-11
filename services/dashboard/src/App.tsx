@@ -12,7 +12,7 @@ import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import "../node_modules/react-mosaic-component/react-mosaic-component.css";
 import './App.css';
 import Layer from './layer/Layer'
-import  SideMenu from './components/SideMenu/SideMenu';
+import  SideMenu from './components/sidemenu/SideMenu';
 
 
 class App extends React.PureComponent<IAppState> {

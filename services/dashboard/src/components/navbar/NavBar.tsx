@@ -32,8 +32,7 @@ class NavBar extends React.Component<Props> {
 
     addToTopRight = () => {
     
-        let { currentNode } = this.props.currentLayer;
-        let windowCount = getLeaves(currentNode).length;
+        let { currentNode, windowCount } = this.props.currentLayer;
 
         if (currentNode) {
           const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);

@@ -29,7 +29,7 @@ import {
 import Visualization from '../visualization/Visualization'
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
-import NavBar from '../components/NavBar/NavBar';
+import NavBar from '../components/navbar/NavBar';
 
 
 interface Props {
@@ -44,13 +44,13 @@ interface Props {
   data: DataConfig[],
 }
 
-let windowCount = 3;
-
-
 interface State {
   visualizationWizzard:  boolean,
   nodeInFocus: number,
 }
+
+let windowCount  = 1; //check createNode
+
 
 class Layer extends React.Component<Props, State> {
     
@@ -76,7 +76,7 @@ class Layer extends React.Component<Props, State> {
         console.log('Mosaic.onRelease():', currentNode);
       };
     
-      _createNode = () => ++windowCount;
+      _createNode = () => ++windowCount; //Do nothing onlythere because the layer lib requirement
      
     
     getVisualization(id:Number, width:number, height:number) {

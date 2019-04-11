@@ -22,6 +22,7 @@ const initialAppState : IAppState = {
           splitPercentage: 40,
         },
         name: "vci",
+        windowCount:3,
       },
       {
         currentNode: {
@@ -34,7 +35,8 @@ const initialAppState : IAppState = {
           },
           splitPercentage: 40,
         },
-        name: "Pombal"
+        name: "Pombal",
+        windowCount:3
       },
     {
       currentNode: {
@@ -43,7 +45,8 @@ const initialAppState : IAppState = {
         second: 2,
         splitPercentage: 40,
       },
-      name: "Data Source"
+      name: "Data Source",
+      windowCount:2
     }
     ],
     currentTheme: 'Blueprint',
@@ -101,7 +104,7 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
     case AppActionTypes.UPDATE_WINDOWS_ARRANGEMENT: {
       const list = state.layers.map((item, j) => {
         if (j === state.currentLayer) {
-          return {...item, currentNode: action.currentNode}
+          return {...item, currentNode: action.currentNode, windowCount: item.windowCount + 1}
         } else {
           return item;
           }

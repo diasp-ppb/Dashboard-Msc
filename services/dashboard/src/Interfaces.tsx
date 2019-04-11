@@ -24,6 +24,7 @@ export const EMPTY_ARRAY: any[] = [];
 export interface  LayerState {
     currentNode: MosaicNode<number> | null;
     name: string;
+    windowCount: number;
 }
 
 export interface VisualizationConfig {
