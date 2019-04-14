@@ -31,7 +31,7 @@ export interface VisualizationConfig {
     type: Visualization_Types,
     dataId: string,
     nodeId: number,
-    xAxis?: boolean,
+    xAxis?: xAxis,
     yAxis?: boolean,
     bars?: BarConfig[],
     lines?: LineConfig[],
@@ -67,3 +67,18 @@ export interface IAppState {
     visualizations: VisualizationConfig[][];
     data: DataConfig[];
 }
+
+
+export interface xAxis{
+    active: boolean,
+    dataKey: string,
+  }
+  
+
+///Default
+
+export const defaulxAxis:xAxis = {
+    active: false,
+    dataKey: "name"
+  }
+  

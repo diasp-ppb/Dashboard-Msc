@@ -27,7 +27,7 @@ class ConfigurationSelector extends React.Component<Props> {
                 return <LineChartConfiguration updateConfig={this.props.updateConfig} config={this.props.config} />;
             
             default: 
-                return <p> The selected visualizations does not have an ConfigurationSelector </p>
+                return <p> The selected visualizations does not have a ConfigurationSelector </p>
         }
 
     }

@@ -73,17 +73,14 @@ class Layer extends React.Component<Props, State> {
       };
     
       _onRelease = (currentNode: MosaicNode<number> | null) => {
-        console.log('Mosaic.onRelease():', currentNode);
       };
-    
-      _createNode = () => ++windowCount; //Do nothing onlythere because the layer lib requirement
-     
-    
+
     getVisualization(id:Number, width:number, height:number) {
       let vis = this.props.visualizations.find( item => item.nodeId === id)
       if (vis != undefined)
-      {
+      { 
         let data = this.getData(vis.dataId);
+        console.log("data", data);
         return (  
         <Visualization
           visualizationConfig={vis}
@@ -116,10 +113,9 @@ class Layer extends React.Component<Props, State> {
               <MosaicWindow<number>
                 additionalControls={EMPTY_ARRAY}
                 title={`Window ${count}`}
-                createNode={this._createNode}
                 path={path}
-                onDragStart={() => console.log('MosaicWindow.onDragStart')}
-                onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
+                onDragStart={() => {}}
+                onDragEnd={(type) => {}}
                 renderToolbar={count === 6 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
              >
                      <ContainerDimensions>
@@ -132,7 +128,6 @@ class Layer extends React.Component<Props, State> {
                
             </MosaicWindow> 
               )}
-            zeroStateView={<MosaicZeroState createNode={this._createNode} />}
             value={this.props.layerState.currentNode}
             onChange={this._onChange}
             onRelease={this._onRelease}

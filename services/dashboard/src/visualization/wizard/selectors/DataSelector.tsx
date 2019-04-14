@@ -9,24 +9,33 @@ interface Props {
     selectData: Function,
 }
 interface State {
-
+    dataIds : string[],
 }
 
 class DataSelector extends React.Component<Props> {
 
+    state: State = {
+        dataIds: this.dataIdToArray()
+    }
+
     dataIdToArray() {
-        return  this.props.data.map( (item, _index) => {
+        const dataIds = this.props.data.map( (item, _index) => {
             return item.dataId;
         })
-    }
-    render() {
 
-            let dataId = this.dataIdToArray();
+        this.props.selectData(dataIds[0])
+
+        return dataIds;
+    }
+    
+    render() {
+            let { dataIds } = this.state;
+            
             return (
             <FormGroup>
             <h3>Visualization Wizzard</h3>
             <div> 
-                <HTMLSelect options={dataId}  onChange={ (event) => { console.log(  event.currentTarget.value );  this.props.selectData(event.currentTarget.value)}}/> 
+                <HTMLSelect options={dataIds}  onChange={ (event) => { console.log(  event.currentTarget.value );  this.props.selectData(event.currentTarget.value)}}/> 
             </div> 
             </FormGroup>
         );

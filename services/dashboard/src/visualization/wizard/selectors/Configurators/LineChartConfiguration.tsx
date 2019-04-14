@@ -1,12 +1,11 @@
 import React from 'react'
-import {VisualizationConfig} from '../../../../Interfaces'
+import {VisualizationConfig, defaulxAxis} from '../../../../Interfaces'
 import { FormGroup, Switch, Divider, Button, NumericInput, HTMLSelect } from '@blueprintjs/core';
-import { LineConfig } from '../../../Chart/LineChart';
 import { LineType }  from 'recharts'
 
 
-const LineTypes = ['basis', 'basisClosed' , 'basisOpen' , 'linear' , 'linearClosed' , 'natural' ,
-'monotoneX' , 'monotoneY','monotone' , 'step' , 'stepBefore' , 'stepAfter' ] //TODO MISS CURVEFACTORY 
+const LineTypes = ["basis", "basisClosed" , "basisOpen" , "linear" , "linearClosed" , "natural" ,
+"monotoneX" , "monotoneY","monotone" , "step" , "stepBefore" , "stepAfter" ] //TODO MISS CURVEFACTORY 
 
 interface Props {
     updateConfig: Function,
@@ -75,12 +74,14 @@ class LineChartConfiguration extends React.Component<Props,State> {
     }
 
     render() {
-            let {xAxis, yAxis,cartesianGrid} = this.props.config;
+            let { yAxis,cartesianGrid} = this.props.config;
             let {n1,n2} = this.state;
+            let xAxis =  this.props.config.xAxis || defaulxAxis;
+
             return (
                 <FormGroup>
-                    <Switch checked={xAxis} label="xAxis" 
-                        onChange={() => this.props.updateConfig( {xAxis: !xAxis })}
+                    <Switch checked={xAxis.active} label="xAxis" 
+                        onChange={() => this.props.updateConfig( {xAxis: {active: !xAxis.active, dataKey: xAxis.dataKey } })}
                     />
     
                     <Switch checked={yAxis} label="yAxis"

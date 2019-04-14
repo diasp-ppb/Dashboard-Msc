@@ -1,6 +1,6 @@
 import React from 'react'
-import {FormGroup, Switch, NumericInput, Divider, Button} from "@blueprintjs/core";
-import { VisualizationConfig } from '../../../../Interfaces';
+import {FormGroup, Switch, NumericInput, Divider, Button, InputGroup} from "@blueprintjs/core";
+import { VisualizationConfig, defaulxAxis } from '../../../../Interfaces';
 
 interface Props {
     updateConfig: Function,
@@ -68,13 +68,20 @@ class BarChartConfiguration extends React.Component<Props,State> {
 
     render() {
         let {config} = this.props;
+        let xAxis =  config.xAxis || defaulxAxis;
 
         return (
             <FormGroup>
-                <Switch checked={config.xAxis} label="xAxis" 
-                    onChange={() => this.props.updateConfig( {xAxis: !config.xAxis })}
+                <Switch checked={xAxis.active} label="xAxis" 
+                    onChange={() => this.props.updateConfig( {xAxis: {active: !xAxis.active, dataKey: xAxis.dataKey } })}
                 />
-
+                {  xAxis.active &&
+                <InputGroup
+                     onChange={(event:any) => {this.props.updateConfig( {xAxis: {active: xAxis.active, dataKey: event.target.value } })} }
+                     value={xAxis.dataKey}
+                     placeholder="dataKey"
+                />
+                }
                 <Switch checked={config.yAxis} label="yAxis"
                     onChange={() => this.props.updateConfig( {yAxis: !config.yAxis })} 
                 />

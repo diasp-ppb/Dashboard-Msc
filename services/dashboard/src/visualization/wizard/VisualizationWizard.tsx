@@ -4,7 +4,7 @@ import ConfigurationSelector from './selectors/ConfigurationSelector'
 import VisualizationSelector from './selectors/VisualizationSelector'
 import {Dialog, Navbar, Tab, Tabs, Button, ButtonGroup ,Alignment} from "@blueprintjs/core";
 import { Classes } from '@blueprintjs/core';
-import { Visualization_Types, VisualizationConfig } from "../../Interfaces"
+import { Visualization_Types, VisualizationConfig, defaulxAxis } from "../../Interfaces"
 
 interface VisualizationWizardProps {
     isOpen: boolean,
@@ -30,7 +30,7 @@ const initialState = {
         type: Visualization_Types.BAR_CHART,
         dataId: "",
         nodeId: -1,
-        xAxis: false,
+        xAxis: defaulxAxis,
         yAxis: false,
         cartesianGrid: {
             active: false,
@@ -44,9 +44,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
 
     state: State = initialState;
 
-    resetState  = () => {
-        this.setState(initialState); 
-    }
+    resetState  = () => { this.setState(initialState); }
 
     handleNavbarTabChange = (navbarTabId: string) => this.setState({ navbarTabId });
 

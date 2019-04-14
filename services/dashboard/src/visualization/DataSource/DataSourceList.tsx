@@ -53,7 +53,6 @@ class DataSourceList extends React.Component<Props, State> {
 
         api<any>(this.state.route)
         .then( (data:any) => {
-            console.log(Array.isArray(data));
             let dataArray = JSON.parse(data);
             this.setState({data: dataArray});
         })

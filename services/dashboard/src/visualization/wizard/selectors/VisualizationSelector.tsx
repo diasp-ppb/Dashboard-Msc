@@ -28,7 +28,7 @@ class VisualizationSelector extends React.Component<Props> {
         <FormGroup>
         <h3>Visualization Wizzard</h3>
         <div> 
-            <HTMLSelect options={types} defaultValue={types[0]} onChange={ (event) => { console.log(  event.currentTarget.value );  this.props.selectVisualization(event.currentTarget.value)}}/> 
+            <HTMLSelect options={types} defaultValue={types[0]} onChange={ (event) => {this.props.selectVisualization(event.currentTarget.value)}}/> 
         </div> 
         </FormGroup>
         );

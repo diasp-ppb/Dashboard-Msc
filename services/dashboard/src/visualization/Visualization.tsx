@@ -1,35 +1,35 @@
 import React from 'react'
-import { VisualizationProps, Visualization_Types } from '../Interfaces';
+import { VisualizationProps, Visualization_Types, defaulxAxis } from '../Interfaces';
 import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
 import MapDeckGL from './Map/MapDeckGL';
 
-
 class Visualization extends React.Component<VisualizationProps> {
 
 
     getComponent() {
       let type = this.props.visualizationConfig.type;
-      let data = this.props.data;
+      let {width, height, visualizationConfig, data} = this.props;
       switch (type) {
         case Visualization_Types.BAR_CHART: {
+          console.log(data);
           return <BarChart
-            width={this.props.width}
-            height={this.props.height}
-            xAxis={this.props.visualizationConfig.xAxis || false}
-            yAxis={this.props.visualizationConfig.yAxis || false}
-            tooltip={this.props.visualizationConfig.tooltip || false}
-            data={data}
-            bars={this.props.visualizationConfig.bars || []}
-            legend={this.props. visualizationConfig.legend || false}
+            width={width}
+            height={height}
+            xAxis={visualizationConfig.xAxis || defaulxAxis}
+            yAxis={visualizationConfig.yAxis || false}
+            tooltip={visualizationConfig.tooltip || false}
+            data={data.data || []}
+            bars={visualizationConfig.bars || []}
+            legend={visualizationConfig.legend || false}
           />
         }
         case Visualization_Types.MAP_LEAFLET: {
           return <MapLeaflet
-          width={this.props.width}
-          height={this.props.height}
+          width={width}
+          height={height}
           /> 
         }
         case Visualization_Types.MAP_DECK_GL: {
@@ -38,14 +38,14 @@ class Visualization extends React.Component<VisualizationProps> {
         
         case Visualization_Types.LINE_CHART: {
           return  <LineChart 
-          width={this.props.width}
-          height={this.props.height}
+          width={width}
+          height={height}
           xAxis={true}
           yAxis={true}
           tooltip={true}
           legend={false}
-          lines={this.props.visualizationConfig.lines || []}
-          data={data}/> 
+          lines={visualizationConfig.lines || []}
+          data={data.data || []}/> 
         }
 
         case Visualization_Types.DATA_SOURCES: {
