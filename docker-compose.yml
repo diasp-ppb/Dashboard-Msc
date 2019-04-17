@@ -9,6 +9,7 @@ services:
       - '3000:3000'
     volumes:
       - ./services/dashboard:/usr/src/app
+
   vci-db: 
     image: kartoza/postgis:latest
     container_name: vci-db
