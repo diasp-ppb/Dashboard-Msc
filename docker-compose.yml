@@ -3,7 +3,7 @@ version: '3'
 services: 
   dashboard:
     build: ./services/dashboard
-    command: nodemon start
+    command: nodemon -L start
     container_name: dashboard
     ports: 
       - '3000:3000'
@@ -39,7 +39,7 @@ services:
   vci-api:
     build: ./services/vci
     container_name: vci_api
-    command: nodemon ./server.js
+    command: nodemon -L ./server.js
     ports: 
       - '3001:3001' 
     environment:

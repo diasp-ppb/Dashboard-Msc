@@ -17,4 +17,4 @@ RUN npm install
 COPY . .
 
 #exports
-EXPOSE 3000 
+EXPOSE 3001 

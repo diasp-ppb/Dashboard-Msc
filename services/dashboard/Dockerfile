@@ -1,12 +1,20 @@
-FROM node:alpine
+FROM node:lts-jessie
 
-WORKDIR /usr/app
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-COPY . ./
+# Install nodemon globally
+RUN npm i -g nodemon 
 
+# Install dependencies
+COPY package.json .
+COPY yarn.lock .
 RUN npm install
-RUN npm install -g nodemon
 
-EXPOSE 3000
 
-CMD ["nodemon", "start"]
+# Bundle app source
+COPY . .
+
+#exports
+EXPOSE 3000 

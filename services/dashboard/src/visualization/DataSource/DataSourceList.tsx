@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import './DataSourceList.css'
 import { addDataConfig } from '../../redux/actions/AppActions';
 import { api } from '../../data/Data';
+import  DownloadButton  from '../../components/button/DownloadButton'
 interface Props {
     items: DataConfig[];
     addDataConfig: Function;
@@ -41,6 +42,7 @@ class DataSourceList extends React.Component<Props, State> {
                      <td>   
                         <ButtonGroup minimal={true} vertical={false}>
                             <Button icon="delete" />
+                            <DownloadButton fileName={item.dataId + ".txt"} fileContent={item.data}/>                          
                         </ButtonGroup>
                      </td>
 
@@ -73,7 +75,7 @@ class DataSourceList extends React.Component<Props, State> {
                  <td>
                      <ButtonGroup minimal={true} vertical={false}>    
                         <Button icon="plus" onClick={this.addNewEntry}/> 
-                        <Button icon="arrow-down" onClick={this.fetchData}/>                            
+                        <Button icon="arrow-down" onClick={this.fetchData}/>  
                      </ButtonGroup>
                  </td>
                </tr>
