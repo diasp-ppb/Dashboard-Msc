@@ -4,3 +4,5 @@ node_modules
 
 ./postgres-data
 
+./cal-server/data/zipped_data
+

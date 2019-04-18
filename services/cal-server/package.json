@@ -1,0 +1,17 @@
+{
+  "name": "cal-server",
+  "version": "1.0.0",
+  "description": "CAL FEUP Server",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon  server",
+    "start": "node ./server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express.js": "^1.0.0"
+  }
+}
