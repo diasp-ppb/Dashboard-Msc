@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.2",
     "cors": "^2.8.5",
-    "express.js": "^1.0.0"
+    "express.js": "^1.0.0",
+    "targz": "^1.0.1"
   }
 }
