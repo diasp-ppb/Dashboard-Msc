@@ -106,8 +106,8 @@ function readRawData(cb) {
             const lineProcessing = function (data, cb) {
                 if(lineCount != 0 && !data.includes("oid") && !data.includes("size")) {
                   let result = data.split(", ")
-                  let n1 = result[0].split("(")[1];      
-                  let n2 = result[1].split(")")[0]; 
+                  let n1 = parseInt(result[0].split("(")[1]);      
+                  let n2 = parseInt(result[1].split(")")[0]); 
                   edges.push({n1,n2});
                 }  
                 lineCount++;
@@ -162,8 +162,8 @@ function readRawData(cb) {
                   let result = data.split(", ")
                   let nodeId = parseInt(result[0].split("(")[1]);      
                   let lat = result[1];
-                  let long = result[2].split(")")[0];
-                  nodes.push({nodeId, lat, long});
+                  let lng = result[2].split(")")[0];
+                  nodes.push({nodeId, lat, lng});
                 }  
                 lineCount++;
             }
@@ -223,7 +223,7 @@ function readRawData(cb) {
         let folderRootPath = RAW_DATA_PATH + "/" + folderRoot ;
         let themeJson = {
             id: folderRoot,
-            cities: [],
+            regions: [],
         }
         fs.readdir(folderRootPath, (err, folders) => {
             if(!err) {
@@ -253,12 +253,13 @@ function readRawData(cb) {
                            }
                            else {
                                
-                               let edges = results[0];
+                               let edges_nodeID = results[0];
                                let nodesXY = results[1];
                                let nodesLatLong = results[2];
                                let tags = results[3];
                                let nodes = [];
-                               
+                               let edges = [];
+
                                 nodesXY.map( item => {
                                         let node = nodesLatLong.find( function (element) {
                                           return element.nodeId == item.nodeId;
@@ -278,11 +279,24 @@ function readRawData(cb) {
                                         
 
                                     }   
-                                )    
-                               themeJson.cities.push({region: folder, edges, nodes});
+                                );
+                                
+                                edges_nodeID.forEach(item => {
+                                    let node1 = nodesLatLong.find(function(element) {
+                                        return element.nodeId === item.n1; 
+                                    })
+                                    let node2 = nodesLatLong.find(function(element) {
+                                        return element.nodeId === item.n2;
+                                    })
+                                    
+                                    edges.push([ {lat: node1.lat, lng: node1.lng}, {lat: node2.lat, lng:node2.lng} ])
+
+                                });
+
+                               themeJson.regions.push({region: folder, edges, nodes});
                                console.log("JSON Object Generacted ",  folderRoot, folder);
 
-                               if(themeJson.cities.length >= folders.length){
+                               if(themeJson.regions.length >= folders.length){
                                    cb(themeJson);
                                }
                            }

@@ -48,10 +48,9 @@ function getCompressedTheme(req, res) {
 function getTheme(req, res) {
    let themeId = req.params.themeId;
    let data = JsonData.find(function(element) {
-        return element.id = themeId;
+        return element.id === themeId;
    }) || {};
-
-   res.send(JSON.stringify(data));
-}
+   res.json(data);
+  }
 
 
