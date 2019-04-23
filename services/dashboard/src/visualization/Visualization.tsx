@@ -9,19 +9,39 @@ import MapDeckGL from './Map/MapDeckGL';
 class Visualization extends React.Component<VisualizationProps> {
 
 
+    applyFilters(){
+      const filters = this.props.visualizationConfig.filters;
+      let data = this.props.data.data;
+      
+      if(!filters) return;
+
+      let result = data;
+
+      filters.forEach( function(element) {
+          result = element.filter(data);
+      }
+      );
+      
+      return result;
+    }
+
     getComponent() {
       let type = this.props.visualizationConfig.type;
-      let {width, height, visualizationConfig, data} = this.props;
+      let {width, height, visualizationConfig} = this.props;
+      
+      let filteredData = this.applyFilters();
+
+      
       switch (type) {
         case Visualization_Types.BAR_CHART: {
-          console.log(data);
+          console.log(filteredData);
           return <BarChart
             width={width}
             height={height}
             xAxis={visualizationConfig.xAxis || defaulxAxis}
             yAxis={visualizationConfig.yAxis || false}
             tooltip={visualizationConfig.tooltip || false}
-            data={data.data || []}
+            data={filteredData || []}
             bars={visualizationConfig.bars || []}
             legend={visualizationConfig.legend || false}
           />
@@ -31,7 +51,7 @@ class Visualization extends React.Component<VisualizationProps> {
           width={width}
           height={height}
           tileLayer={visualizationConfig.tileLayer || false}
-          data={data}
+          data={filteredData}
           /> 
         }
         case Visualization_Types.MAP_DECK_GL: {
@@ -47,7 +67,7 @@ class Visualization extends React.Component<VisualizationProps> {
           tooltip={true}
           legend={false}
           lines={visualizationConfig.lines || []}
-          data={data.data || []}/> 
+          data={filteredData || []}/> 
         }
 
         case Visualization_Types.DATA_SOURCES: {

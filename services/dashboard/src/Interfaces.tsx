@@ -15,6 +15,7 @@ export enum Visualization_Types {
     MAP_LEAFLET = 'MAP_LEAFLET',
     LINE_CHART = 'LINE_CHART',
     DATA_SOURCES = 'DATA_SOURCES',
+    FILTER_SELECTION = 'FILTER_SELECTION',
 }
 
 export type Theme = keyof typeof THEMES;
@@ -42,6 +43,13 @@ export interface VisualizationConfig {
         strokeDasharray?: string,
     },
     tileLayer?: boolean
+    filters?: Filter[],
+}
+
+export interface Filter {
+    filter: Function,
+    options: string[],
+    result: any,
 }
 
 export interface VisualizationProps {
@@ -55,6 +63,7 @@ export interface DataConfig {
     dataId: string,
     apiEndpoint?: {
         route: string,
+        compressedRoute?: string,
     },
     data: any,
 }
@@ -105,7 +114,6 @@ export const defaultRegion:region = {
     nodes: [],
     edges: [],
 }
-///Default
 
 export const defaulxAxis:xAxis = {
     active: false,

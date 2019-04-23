@@ -19,13 +19,12 @@ interface Props {
   width: number,
   height: number,
   tileLayer: boolean,
-  data: region[], //TODO GEOJSON
+  data: region, //TODO GEOJSON
 }
 interface State {
   lat: number,
   lng: number,
   zoom: number,
-  selectedRegion: number
 }
 
 class MapLeaflet extends React.Component<Props,State> {
@@ -34,14 +33,8 @@ class MapLeaflet extends React.Component<Props,State> {
       lng: -8.597521914750235, //TODO
       lat: 39.889390483547047, //TODO
       zoom: 13,
-      selectedRegion: 0
     };
 
-  changeRegion(selectedRegion:number) {
-    if(this.props.data.length > selectedRegion) {
-      this.setState({selectedRegion})
-    } 
-  }
   
   addMarkers(region:region) {
     let markers = [];
@@ -95,11 +88,7 @@ class MapLeaflet extends React.Component<Props,State> {
   
   
   render() {
-
-    let {selectedRegion}= this.state;
-    let {data} = this.props;
-    const region = data[selectedRegion] || defaultRegion;
-
+    const region = this.props.data;
 
     return (
        <Map center={[this.state.lat, this.state.lng]} zoom={this.state.zoom} style={{
