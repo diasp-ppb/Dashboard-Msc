@@ -30,6 +30,8 @@ class Visualization extends React.Component<VisualizationProps> {
           return <MapLeaflet
           width={width}
           height={height}
+          tileLayer={visualizationConfig.tileLayer || false}
+          data={data}
           /> 
         }
         case Visualization_Types.MAP_DECK_GL: {

@@ -7,8 +7,14 @@ export function api<T>(url: string): Promise<T> {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        return response.json().then(data => data as T);
+        console.log(response);
+        return response.json();       
       })
+      .then(function(data) {
+        console.log(data);
+        return data as T
+      })
+
       .catch((error: Error) => {
         throw error;
       });

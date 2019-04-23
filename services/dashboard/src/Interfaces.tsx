@@ -41,7 +41,7 @@ export interface VisualizationConfig {
         active: boolean,
         strokeDasharray?: string,
     },
-    baseMap?:boolean,
+    tileLayer?: boolean
 }
 
 export interface VisualizationProps {
@@ -74,7 +74,37 @@ export interface xAxis{
     dataKey: string,
   }
   
+export interface node  {
+    x: number,
+    y: number,
+    lat: number,
+    lng: number,
+    tags: string[],
+}  
 
+export interface edge {
+    p1: {
+        lat: number,
+        lng: number,
+    }
+    p2: {
+        lat: number,
+        lng:number,
+    }
+}
+
+export interface region {
+    region: string,
+    nodes?: node[],
+    edges?: edge[]
+}
+
+
+export const defaultRegion:region = {
+    region: "default",
+    nodes: [],
+    edges: [],
+}
 ///Default
 
 export const defaulxAxis:xAxis = {

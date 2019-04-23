@@ -55,8 +55,7 @@ class DataSourceList extends React.Component<Props, State> {
 
         api<any>(this.state.route)
         .then( (data:any) => {
-            let dataArray = JSON.parse(data);
-            this.setState({data: dataArray});
+            this.setState({data});
         })
         .catch((error: Error) => {
             console.log(error) //TOAST DISPATCH TO USER
