@@ -80,7 +80,6 @@ class Layer extends React.Component<Props, State> {
       if (vis != undefined)
       { 
         let data = this.getData(vis.dataId);
-        console.log("data", data);
         return (  
         <Visualization
           visualizationConfig={vis}

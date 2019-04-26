@@ -1,24 +1,25 @@
 import React from 'react'
-import { VisualizationProps, Visualization_Types, defaulxAxis } from '../Interfaces';
+import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion } from '../Interfaces';
 import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
 import MapDeckGL from './Map/MapDeckGL';
+import FilterSelector from './Filter/FilterSelector';
 
 class Visualization extends React.Component<VisualizationProps> {
 
 
     applyFilters(){
       const filters = this.props.visualizationConfig.filters;
-      let data = this.props.data.data;
+      console.log(this.props);
+       
+      if(!filters || this.props.data ) return;
       
-      if(!filters) return;
-
-      let result = data;
+      let result = this.props.data.data;
 
       filters.forEach( function(element) {
-          result = element.filter(data);
+          result = element.filter(result);
       }
       );
       
@@ -51,7 +52,7 @@ class Visualization extends React.Component<VisualizationProps> {
           width={width}
           height={height}
           tileLayer={visualizationConfig.tileLayer || false}
-          data={filteredData}
+          data={filteredData || defaultRegion}
           /> 
         }
         case Visualization_Types.MAP_DECK_GL: {
@@ -72,6 +73,10 @@ class Visualization extends React.Component<VisualizationProps> {
 
         case Visualization_Types.DATA_SOURCES: {
           return <DataSourceList/> 
+        }
+
+        case Visualization_Types.FILTER_SELECTION: {
+          return <FilterSelector/>
         }
 
         default: null

@@ -13,7 +13,8 @@ export enum AppActionTypes {
     CHANGE_THEME = 'CHANGE_THEME',
     ADD_VISUALIZATION = 'ADD_VISUALIZATION',
     ADD_DATA_CONFIG = 'ADD_DATA_CONFIG',
-    UPDATE_DATA = 'UPDATE_DATA'
+    UPDATE_DATA = 'UPDATE_DATA',
+    UPDATE_VISUALIZATION = 'UPDATE_VISUALIZATION'
 }
 
 export interface IAppAddLayer{
@@ -60,9 +61,15 @@ export interface IAppDataUpdate {
     data: any,
 }
 
+export interface IAppVisualizationUpdate {
+    type: AppActionTypes.UPDATE_VISUALIZATION
+    visualizatioConfig: VisualizationConfig
+}
+
 export type AppAction = IAppAddLayer | IAppRemoveLayer | IAppOpenDrawer | 
                      IAppCloseDrawer | IAppSelectLayer | IAppUpdateWindowArrangement |
-                     IAppChangeTheme | IAppAddVisualization | IAppAddDataConfig | IAppDataUpdate;
+                     IAppChangeTheme | IAppAddVisualization | IAppAddDataConfig | IAppDataUpdate |
+                     IAppVisualizationUpdate;
 
 export function addLayer() {
     return {
@@ -123,5 +130,12 @@ export function updateData(dataId:string, data:any) {
         type: AppActionTypes.UPDATE_DATA,
         dataId:dataId,
         data: data,
+    }
+}
+
+export function updateVisualizationConfig(visualizatioConfig: VisualizationConfig) {
+    return {
+        type: AppActionTypes.UPDATE_VISUALIZATION,
+        visualizatioConfig: visualizatioConfig,
     }
 }

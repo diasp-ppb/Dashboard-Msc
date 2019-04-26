@@ -4,6 +4,7 @@ import {  Reducer } from 'redux';
 import {
     AppAction,
     AppActionTypes,
+    selectLayer,
 } from '../actions/AppActions'
 import { IAppState } from '../../Interfaces';
 import { initialAppState } from '../../settings/Settings';
@@ -87,6 +88,12 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
         }
       })
       return {...state, data:data}
+    }
+
+    case AppActionTypes.UPDATE_VISUALIZATION:{
+      let visualizations = state.visualizations[state.currentLayer].map( (item, j) => {
+        
+      })
     }
     default:
       return state;

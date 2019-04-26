@@ -27,8 +27,7 @@ app.get('/', function(req, res){
 
 
 app.get('/getTheme/:themeId', getTheme);
-
-
+app.get('/getCity/:themeId/:city', getCity);
 app.get('/getThemeCompressed/:themeId', getCompressedTheme);
 
 
@@ -52,5 +51,20 @@ function getTheme(req, res) {
    }) || {};
    res.json(data);
   }
+
+  function getCity(req, res) {
+    let themeId = req.params.themeId;
+    let city = req.params.city;
+    let data = JsonData.find(function(element) {
+         return element.id === themeId;
+    }) || {};
+
+    let cityData = data.regions.find(function(element) {
+      return element.region === city;
+    }) || {};
+    citydata.region = themeId+'_'+city;
+    res.json(cityData);
+   }
+ 
 
 
