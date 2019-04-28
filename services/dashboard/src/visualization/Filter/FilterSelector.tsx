@@ -4,10 +4,12 @@ import { FormGroup, HTMLSelect, Divider, Label, ControlGroup, Button, InputGroup
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as Filters from '../../filters/filter';
+import { updateVisualizationConfig } from '../../redux/actions/AppActions';
 
 interface Props {
     visualizations: VisualizationConfig[],
     data: DataConfig[],
+    updateVisualization: Function,
 }
 
 interface State {
@@ -62,8 +64,16 @@ class FilterSelector extends React.Component<Props, State> {
         return dataIds;
     }
 
+    changeDataset(dataset: string) {
+        //TODO
+    }
+
     changeFilter(filterParam: string) {
         this.setState({filterValue: filterParam});
+
+
+        let visIndex = this.state.selectedVisualization]
+        let vis = this.props.visualizations[;
     }
    
     render() {
@@ -107,8 +117,8 @@ class FilterSelector extends React.Component<Props, State> {
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-     
+    return {    
+     updateVisualization: (vis:VisualizationConfig) => dispatch(updateVisualizationConfig(vis))
     }
   };
   

@@ -6,7 +6,7 @@ import {
     AppActionTypes,
     selectLayer,
 } from '../actions/AppActions'
-import { IAppState } from '../../Interfaces';
+import { IAppState, VisualizationConfig } from '../../Interfaces';
 import { initialAppState } from '../../settings/Settings';
 
 
@@ -91,9 +91,18 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
     }
 
     case AppActionTypes.UPDATE_VISUALIZATION:{
-      let visualizations = state.visualizations[state.currentLayer].map( (item, j) => {
-        
+      let visualizationsInLayer:VisualizationConfig[] = state.visualizations[state.currentLayer].map( (item) => {
+        if(item.nodeId === action.visualizatioConfig.nodeId) {
+          return action.visualizatioConfig;
+        }
+        else {
+          return item;
+        }
       })
+
+      let vis:VisualizationConfig[][] = state.visualizations;
+      vis[state.currentLayer] = visualizationsInLayer;
+      return {...state, visualizations: vis};
     }
     default:
       return state;
