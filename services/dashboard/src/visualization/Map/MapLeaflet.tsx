@@ -1,14 +1,11 @@
-/// app.js
-import React, { ReactElement, ReactChildren } from 'react';
+import React, { ReactElement } from 'react';
+
+import 'leaflet/dist/leaflet.css'
 
 import { Map, GeoJSON, TileLayer, Popup, Marker, Polyline } from   'react-leaflet';
-import { IconNames } from "@blueprintjs/icons";
-import { Icon, Intent } from "@blueprintjs/core";
-import 'mapbox-gl/dist/mapbox-gl.css'
-import 'leaflet/dist/leaflet.css'
-import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'; //TODO
-import { tileLayer, LatLngExpression } from 'leaflet';
-import { node, edge, region, defaultRegion } from '../../Interfaces';
+//import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'; //TODO
+import { LatLngExpression, polyline } from 'leaflet';
+import { node, edge, region } from '../../Interfaces';
 import marker from './map-marker.png'
 
 //import data from '../../pombal';
@@ -36,32 +33,48 @@ interface Props {
   data: region, //TODO GEOJSON
 }
 interface State {
+  width: number,
+  height: number,
   lat: number,
   lng: number,
   zoom: number,
+  polylines: LatLngExpression[][],
 }
 
 class MapLeaflet extends React.Component<Props,State> {
 
     state:State = {
+      height: 800, // > 400 
+      width: 0,
       lng: -8.5601989, //TODO
       lat: 40.5857447, //TODO
-      zoom: 13,
+      zoom: 12,
+      polylines: [],
     };
 
+
+  componentWillReceiveProps(nextProps:Props) {
+    console.log("receive NEw props");
+    this.setState({
+                  
+                  polylines: this.addEdges(nextProps.data),
+                  height: nextProps.height > 800? nextProps.height : 800,
+                  width: nextProps.width,
+                  })
+  }
+
   addEdges = (region:region) => {
-    let polyline : LatLngExpression [] = [];
-    let i = 0;
+    
+    let polyline : LatLngExpression [][] = [];
+    
+    console.log("total edges", region.edges && region.edges.length);
+    
     region.edges &&
     region.edges.forEach(function (element:edge) {
-      if(i === 0)
-      console.log("elemente" , element);
+      polyline.push([[element[0].lat, element[0].lng],[element[1].lat,element[1].lng]]);
+    })
 
-      i++;
-      polyline.push([element[0].lat, element[0].lng]);
-    });
-
-    return  (<Polyline color="lime" positions={polyline} />)
+    return polyline;
   }
 
   tileLayer() {
@@ -75,13 +88,12 @@ class MapLeaflet extends React.Component<Props,State> {
   }
   
   
-  
   render() {
     const region = this.props.data;
     console.log("Leaflet", region );
     return (
        <Map center={[this.state.lat, this.state.lng]} zoom={this.state.zoom} style={{
-         height: this.props.height
+         height: this.state.height,
        }}  >
       
         {this.tileLayer()}
@@ -106,9 +118,11 @@ class MapLeaflet extends React.Component<Props,State> {
             );
           }
         })}
-        {this.addEdges(region)}
+
+        <Polyline color="lime" positions={this.state.polylines} options={ {noClip: true}}/>
+        
       </Map>
-     
+      
     );
   }
 }
