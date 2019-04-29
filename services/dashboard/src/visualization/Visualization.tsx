@@ -1,28 +1,44 @@
 import React from 'react'
-import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion } from '../Interfaces';
+import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion, IAppState } from '../Interfaces';
 import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
 import MapDeckGL from './Map/MapDeckGL';
-import FilterSelector from './Filter/FilterSelector';
+import  FilterSelector  from './Filter/FilterSelector';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
-class Visualization extends React.Component<VisualizationProps> {
+
+export default class Visualization extends React.Component<VisualizationProps> {
 
 
     applyFilters(){
       const filters = this.props.visualizationConfig.filters;
       console.log(this.props);
-       
-      if(!filters || this.props.data ) return;
-      
+      if(!filters)
+      {
+        if(!this.props.data)
+        {
+          console.log(this.props.visualizationConfig.nodeId + "");
+          return;
+        }
+        else 
+        {
+          console.log(this.props.visualizationConfig.nodeId + " nothing to do: filters");
+
+          return this.props.data.data;
+        }
+      } 
+      console.log(this.props.visualizationConfig.nodeId + " applying: filters");
+
       let result = this.props.data.data;
 
-      filters.forEach( function(element) {
+     /* filters.forEach( function(element) {
           result = element.filter(result);
       }
       );
-      
+      */
       return result;
     }
 
@@ -31,11 +47,11 @@ class Visualization extends React.Component<VisualizationProps> {
       let {width, height, visualizationConfig} = this.props;
       
       let filteredData = this.applyFilters();
-
+      
+      console.log("Filtered Data:" + filteredData);
       
       switch (type) {
         case Visualization_Types.BAR_CHART: {
-          console.log(filteredData);
           return <BarChart
             width={width}
             height={height}
@@ -51,7 +67,7 @@ class Visualization extends React.Component<VisualizationProps> {
           return <MapLeaflet
           width={width}
           height={height}
-          tileLayer={visualizationConfig.tileLayer || false}
+          tileLayer={ true }//visualizationConfig.tileLayer || false}
           data={filteredData || defaultRegion}
           /> 
         }
@@ -89,5 +105,3 @@ class Visualization extends React.Component<VisualizationProps> {
     }
 
 }
-
-export default Visualization;

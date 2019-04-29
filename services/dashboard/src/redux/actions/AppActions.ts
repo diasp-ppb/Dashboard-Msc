@@ -63,7 +63,7 @@ export interface IAppDataUpdate {
 
 export interface IAppVisualizationUpdate {
     type: AppActionTypes.UPDATE_VISUALIZATION
-    visualizatioConfig: VisualizationConfig
+    visualizationConfig: VisualizationConfig
 }
 
 export type AppAction = IAppAddLayer | IAppRemoveLayer | IAppOpenDrawer | 
@@ -119,6 +119,8 @@ export function addVisualization(vis: VisualizationConfig) {
 }
 
 export function addDataConfig(dataConfig: DataConfig){
+    console.log(dataConfig);
+    
     return {
         type: AppActionTypes.ADD_DATA_CONFIG,
         dataConfig: dataConfig
@@ -133,9 +135,9 @@ export function updateData(dataId:string, data:any) {
     }
 }
 
-export function updateVisualizationConfig(visualizatioConfig: VisualizationConfig) {
+export function updateVisualizationConfig(visualizationConfig: VisualizationConfig) {
     return {
         type: AppActionTypes.UPDATE_VISUALIZATION,
-        visualizatioConfig: visualizatioConfig,
+        visualizationConfig: visualizationConfig,
     }
 }

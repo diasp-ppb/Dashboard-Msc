@@ -6,6 +6,7 @@ var PORT = 3002;
 
 let data = require('./data');
 var JsonData = [];
+
 data.readRawData(function(data) {
     JsonData.push(data);
     console.log(data);
@@ -35,6 +36,26 @@ app.listen(PORT, () => {
   console.log(`App running on port ${PORT}.`)
 });
 
+function findTheme(themeId, cb) {
+  let theme =  JsonData.find(function(element) {
+       return element.id === themeId;
+  })
+
+  cb(theme);
+}
+
+
+function findCity(themeId, cityId, cb) 
+{
+  findTheme(themeId, function(result){
+    let city = result.regions.find(function(element) {
+      console.log("element.region" , element.region);
+      return element.region === cityId;
+    })
+    cb(city);
+  })
+}
+
 
 
 function getCompressedTheme(req, res) {
@@ -46,24 +67,23 @@ function getCompressedTheme(req, res) {
 
 function getTheme(req, res) {
    let themeId = req.params.themeId;
-   let data = JsonData.find(function(element) {
-        return element.id === themeId;
-   }) || {};
-   res.json(data);
+   
+   findTheme(themeId,function(result) {
+     return res.json(result);
+   })
   }
 
   function getCity(req, res) {
+    
     let themeId = req.params.themeId;
     let city = req.params.city;
-    let data = JsonData.find(function(element) {
-         return element.id === themeId;
-    }) || {};
 
-    let cityData = data.regions.find(function(element) {
-      return element.region === city;
-    }) || {};
-    citydata.region = themeId+'_'+city;
-    res.json(cityData);
+    findCity(themeId, city, function(result) {
+        let cityData = {...result};
+
+        cityData.region = themeId+'_'+city;
+        res.json(cityData);
+      })
    }
  
 

@@ -1,8 +1,12 @@
 import { region } from "../Interfaces";
 
+export interface Filters {
+    getNodesWithTag: Function,
+    removeEdges: Function,
+    [key: string] : Function,
+}
 
-
-export function getNodesWithTag(region: region, options: string[]) {
+function getNodesWithTag(region: region, options: string[]) {
     let selectedTag = options[0];
     if  (region.nodes && region.edges)
     {
@@ -17,7 +21,7 @@ export function getNodesWithTag(region: region, options: string[]) {
     return region;
 }
 
-export function removeEdges(region: region, options: string[]) {
+function removeEdges(region: region, options: string[]) {
     if  (region.nodes && region.edges)
     {
         let filteredRegion = {
@@ -31,5 +35,9 @@ export function removeEdges(region: region, options: string[]) {
     return region;
 }
 
+export const filters:Filters = {
+    getNodesWithTag: getNodesWithTag,
+    removeEdges: removeEdges
+}
 
   

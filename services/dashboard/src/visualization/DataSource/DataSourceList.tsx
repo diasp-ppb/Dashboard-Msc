@@ -55,7 +55,7 @@ class DataSourceList extends React.Component<Props, State> {
 
         api<any>(this.state.route)
         .then( (data:any) => {
-            this.setState({data});
+            this.setState({data: data});
         })
         .catch((error: Error) => {
             console.log(error) //TOAST DISPATCH TO USER
@@ -81,7 +81,7 @@ class DataSourceList extends React.Component<Props, State> {
     }
 
     addNewEntry = () =>  {
-
+        console.log("DataSource List data:", this.state.data);
         if(this.state.dataId !== DEFAULT_VALUE && this.state.route !== DEFAULT_VALUE) {
             let newEntry:DataConfig = {
                 dataId: this.state.dataId,

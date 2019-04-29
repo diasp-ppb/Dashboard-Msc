@@ -92,11 +92,11 @@ export interface node  {
 }  
 
 export interface edge {
-    p1: {
+    0: {
         lat: number,
         lng: number,
     }
-    p2: {
+    1: {
         lat: number,
         lng:number,
     }

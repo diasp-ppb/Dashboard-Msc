@@ -92,8 +92,8 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
 
     case AppActionTypes.UPDATE_VISUALIZATION:{
       let visualizationsInLayer:VisualizationConfig[] = state.visualizations[state.currentLayer].map( (item) => {
-        if(item.nodeId === action.visualizatioConfig.nodeId) {
-          return action.visualizatioConfig;
+        if(item.nodeId === action.visualizationConfig.nodeId) {
+          return action.visualizationConfig;
         }
         else {
           return item;
@@ -102,6 +102,9 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
 
       let vis:VisualizationConfig[][] = state.visualizations;
       vis[state.currentLayer] = visualizationsInLayer;
+
+      console.log(vis[state.currentLayer]);
+      
       return {...state, visualizations: vis};
     }
     default:
