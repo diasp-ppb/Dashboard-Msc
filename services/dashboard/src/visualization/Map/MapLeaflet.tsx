@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { Map, GeoJSON, TileLayer, Popup, Marker, Polyline } from   'react-leaflet';
 //import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'; //TODO
 import { LatLngExpression, polyline } from 'leaflet';
-import { node, edge, region } from '../../Interfaces';
+import { node, region } from '../../Interfaces';
 import marker from './map-marker.png'
 
 //import data from '../../pombal';
@@ -54,27 +54,12 @@ class MapLeaflet extends React.Component<Props,State> {
 
 
   componentWillReceiveProps(nextProps:Props) {
-    console.log("receive NEw props");
     this.setState({
                   
-                  polylines: this.addEdges(nextProps.data),
+                  polylines: nextProps.data.polylines || [],
                   height: nextProps.height > 800? nextProps.height : 800,
                   width: nextProps.width,
                   })
-  }
-
-  addEdges = (region:region) => {
-    
-    let polyline : LatLngExpression [][] = [];
-    
-    console.log("total edges", region.edges && region.edges.length);
-    
-    region.edges &&
-    region.edges.forEach(function (element:edge) {
-      polyline.push([[element[0].lat, element[0].lng],[element[1].lat,element[1].lng]]);
-    })
-
-    return polyline;
   }
 
   tileLayer() {
@@ -90,7 +75,6 @@ class MapLeaflet extends React.Component<Props,State> {
   
   render() {
     const region = this.props.data;
-    console.log("Leaflet", region );
     return (
        <Map center={[this.state.lat, this.state.lng]} zoom={this.state.zoom} style={{
          height: this.state.height,
@@ -118,8 +102,10 @@ class MapLeaflet extends React.Component<Props,State> {
             );
           }
         })}
-
-        <Polyline color="lime" positions={this.state.polylines} options={ {noClip: true}}/>
+        {
+         region.polylines && region.polylines.length > 0 &&
+         <Polyline color="lime" positions={this.state.polylines} options={ {noClip: true}}/>
+        }
         
       </Map>
       

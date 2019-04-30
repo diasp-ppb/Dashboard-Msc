@@ -119,8 +119,6 @@ export function addVisualization(vis: VisualizationConfig) {
 }
 
 export function addDataConfig(dataConfig: DataConfig){
-    console.log(dataConfig);
-    
     return {
         type: AppActionTypes.ADD_DATA_CONFIG,
         dataConfig: dataConfig

@@ -76,7 +76,6 @@ class FilterSelector extends React.Component<Props, State> {
         let {selectedVisualization} = this.state;
 
         let vis = this.props.visualizations.find(function(item) {
-            console.log("window: " + item.nodeId, "selected:" + selectedVisualization);
 
             return   item.nodeId.toString() === selectedVisualization;
         })
@@ -100,26 +99,34 @@ class FilterSelector extends React.Component<Props, State> {
 
         let {selectedVisualization, selectedFilter} = this.state;
 
-        console.log(this.props.visualizations);
-
         let vis = this.props.visualizations.find(function(item) {
-            console.log("window " + item.nodeId, selectedVisualization);
             return  item.nodeId.toString() === selectedVisualization;
         })
+        console.log("change filter", vis)
+        console.log("key", filter, "keys", Object.keys(filters));
 
-        if(vis && selectedFilter in Object.keys(filters)) 
-        {
-            let filterFunction =  filters[selectedFilter];
-            let filter:Filter = {
+        if(vis)
+        {   
+            if(filter === '') {
+             vis.filters = [];
+            }
+            else if (Object.keys(filters).includes(filter)) {
+             console.log("update config");
+             let filterFunction =  filters[filter];
+             let newfilter:Filter = {
                 filter: filterFunction,
                 options: [filterParam],
-                result: [],
+             }
+
+             vis.filters = [newfilter];
+
             }
 
-            vis.filters = [filter];
+            
 
             this.props.updateVisualization(vis);
         }
+       
     }
    
     render() {
@@ -149,7 +156,7 @@ class FilterSelector extends React.Component<Props, State> {
                           large={false}
                           leftIcon="filter"
                           onChange={(event: any) => {this.changeFilter(selectedFilter, event.target.value)}}
-                          placeholder="Filter histogram..."
+                          placeholder="Filter param"
                           small={true}
                           value={filterValue}
                         />

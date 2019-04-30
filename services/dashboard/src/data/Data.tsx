@@ -7,11 +7,9 @@ export function api<T>(url: string): Promise<T> {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        console.log(response);
         return response.json();       
       })
       .then(function(data) {
-        console.log(data);
         return data as T
       })
 

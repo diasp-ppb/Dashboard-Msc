@@ -6,21 +6,17 @@ import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
 import MapDeckGL from './Map/MapDeckGL';
 import  FilterSelector  from './Filter/FilterSelector';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-
 
 export default class Visualization extends React.Component<VisualizationProps> {
 
 
     applyFilters(){
       const filters = this.props.visualizationConfig.filters;
-      console.log(this.props);
       if(!filters)
       {
         if(!this.props.data)
         {
-          console.log(this.props.visualizationConfig.nodeId + "");
+          console.log("Visualization", this.props.visualizationConfig.nodeId);
           return;
         }
         else 
@@ -34,11 +30,12 @@ export default class Visualization extends React.Component<VisualizationProps> {
 
       let result = this.props.data.data;
 
-     /* filters.forEach( function(element) {
-          result = element.filter(result);
+      filters.forEach( function(element) {
+         console.log("filter", element);
+          result = element.filter(result, element.options);
       }
       );
-      */
+
       return result;
     }
 
@@ -48,7 +45,7 @@ export default class Visualization extends React.Component<VisualizationProps> {
       
       let filteredData = this.applyFilters();
       
-      console.log("Filtered Data:" + filteredData);
+      console.log("Filtered Data:", filteredData);
       
       switch (type) {
         case Visualization_Types.BAR_CHART: {

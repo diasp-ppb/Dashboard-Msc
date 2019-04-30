@@ -14,7 +14,6 @@ class ConfigurationSelector extends React.Component<Props> {
 
     renderConfigDisplayer() {
         let type = this.props.config.type;
-        console.log(type, Visualization_Types.BAR_CHART);
         switch(type) {
             
             case Visualization_Types.BAR_CHART:

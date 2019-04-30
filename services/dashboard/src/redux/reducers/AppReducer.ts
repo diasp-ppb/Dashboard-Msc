@@ -102,8 +102,6 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
 
       let vis:VisualizationConfig[][] = state.visualizations;
       vis[state.currentLayer] = visualizationsInLayer;
-
-      console.log(vis[state.currentLayer]);
       
       return {...state, visualizations: vis};
     }

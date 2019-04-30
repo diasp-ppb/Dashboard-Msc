@@ -3,6 +3,8 @@ import { Classes } from '@blueprintjs/core';
 import {MosaicNode} from 'react-mosaic-component';
 import { BarConfig } from './visualization/Chart/BarChart';
 import { LineConfig } from './visualization/Chart/LineChart';
+import { Polyline } from 'react-leaflet';
+import { LatLngExpression } from 'leaflet';
  
 export const THEMES = {
   ['Blueprint']: 'mosaic-blueprint-theme',
@@ -48,8 +50,7 @@ export interface VisualizationConfig {
 
 export interface Filter {
     filter: Function,
-    options: string[],
-    result: any,
+    options: string[]
 }
 
 export interface VisualizationProps {
@@ -91,28 +92,19 @@ export interface node  {
     tags: string[],
 }  
 
-export interface edge {
-    0: {
-        lat: number,
-        lng: number,
-    }
-    1: {
-        lat: number,
-        lng:number,
-    }
-}
+
 
 export interface region {
     region: string,
     nodes?: node[],
-    edges?: edge[]
+    polylines?: LatLngExpression[][],
 }
 
 
 export const defaultRegion:region = {
     region: "default",
     nodes: [],
-    edges: [],
+    polylines: [],
 }
 
 export const defaulxAxis:xAxis = {

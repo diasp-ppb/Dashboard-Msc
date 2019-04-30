@@ -259,7 +259,7 @@ function readRawData(cb) {
                                let tags = results[3];
                                let nodes = [];
                                let edges = [];
-
+                               let polylines = [];
                                 nodesXY.map( item => {
                                         let node = nodesLatLong.find( function (element) {
                                           return element.nodeId == item.nodeId;
@@ -280,20 +280,61 @@ function readRawData(cb) {
 
                                     }   
                                 );
+
                                 
-                                edges_nodeID.forEach(item => {
-                                    let node1 = nodesLatLong.find(function(element) {
-                                        return element.nodeId === item.n1; 
+                                console.log("number of edges ", edges_nodeID.length)
+                                
+                                const findPolyLine = function(startPoint, cb) {
+                                    let location = -1;
+                                    let edge = edges_nodeID.find(function(element, index){
+                                        location = index;
+                                        return element.n1 === startPoint
                                     })
-                                    let node2 = nodesLatLong.find(function(element) {
-                                        return element.nodeId === item.n2;
-                                    })
+
+
+                                    if(edge)
+                                    {
+                                        let begin = [edge.n2];
+                                        edges_nodeID.splice(location,1);
+                                        
+                                        findPolyLine( edge.n2, function (result) {
+                                            cb(begin.concat(result));
+                                        });
+                                    }
+                                    else {
+                                        cb([]);
+                                    }
+                                }
+
+
+                                while(edges_nodeID.length > 0) {
+                                    let currentEdge = edges_nodeID.shift();
+                                    let polyLine =  [currentEdge.n1, currentEdge.n2];
                                     
-                                    edges.push([ {lat: node1.lat, lng: node1.lng}, {lat: node2.lat, lng:node2.lng} ])
+                                    findPolyLine(currentEdge.n2, (result) => {
+                                        polyLine = polyLine.concat(result);
 
+                                        console.log(polyLine.toString());
+    
+                                        polylines.push(polyLine);
+                                    });
+                                }
+                                
+
+                                console.log("number of lines ", polylines.length)
+                                
+                                let finalPolylines = polylines.map(item => {
+                                    return item.map(function (node) {
+                                        let nodeLatLng = nodesLatLong.find(function(element) {
+                                            return element.nodeId === node; 
+                                        })
+                                        return [nodeLatLng.lat, nodeLatLng.lng] ;
+                                    })
                                 });
+                                                  
+                               console.log("final polylines count",finalPolylines.length);
 
-                               themeJson.regions.push({region: folder, edges, nodes});
+                               themeJson.regions.push({region: folder, polylines: finalPolylines, nodes});
                                console.log("JSON Object Generacted ",  folderRoot, folder);
 
                                if(themeJson.regions.length >= folders.length){
