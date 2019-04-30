@@ -119,7 +119,7 @@ class Layer extends React.Component<Props, State> {
              >
                      <ContainerDimensions>
                      { ({ width, height }) => 
-                       <div className="example-window" style={{height: height, width: width}}>
+                       <div style={{height: height, width: width}}>
                        {this.getVisualization(count, width * 0.95, height * 0.95)}
                        </div>
                     }
