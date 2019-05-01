@@ -1,9 +1,9 @@
 import React from 'react'
 import { Filter, VisualizationConfig, IAppState, Visualization_Types, DataConfig } from '../../Interfaces';
-import { FormGroup, HTMLSelect, Divider, Label, ControlGroup, Button, InputGroup } from '@blueprintjs/core';
+import { FormGroup, HTMLSelect, Label, ControlGroup, InputGroup } from '@blueprintjs/core';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { filters, Filters } from '../../filters/filter';
+import { filters } from '../../filters/filter';
 import { updateVisualizationConfig } from '../../redux/actions/AppActions';
 
 interface Props {
@@ -97,7 +97,7 @@ class FilterSelector extends React.Component<Props, State> {
             filterValue: filterParam});
 
 
-        let {selectedVisualization, selectedFilter} = this.state;
+        let {selectedVisualization } = this.state;
 
         let vis = this.props.visualizations.find(function(item) {
             return  item.nodeId.toString() === selectedVisualization;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion, IAppState } from '../Interfaces';
+import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion} from '../Interfaces';
 import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';

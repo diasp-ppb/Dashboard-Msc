@@ -99,3 +99,9 @@ export const initialAppState:IAppState = {
         }
       ],
 }
+
+
+export const calServer = {
+  submitReason: 'http://localhost:3002',
+}
+

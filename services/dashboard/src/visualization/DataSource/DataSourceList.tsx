@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import './DataSourceList.css'
 import { addDataConfig } from '../../redux/actions/AppActions';
 import { api } from '../../data/Data';
-import  DownloadButton  from '../../components/button/DownloadButton'
+import DownloadForm from '../../components/downloadForm/DownloadForm';
 interface Props {
     items: DataConfig[];
     addDataConfig: Function;
@@ -17,6 +17,8 @@ interface State {
     dataId: string,
     route: string,
     data: any[],
+    downloadForm: boolean,
+    selectedData: string,
 }
 
 const DEFAULT_VALUE = "";
@@ -27,6 +29,19 @@ class DataSourceList extends React.Component<Props, State> {
         dataId: DEFAULT_VALUE,
         route: DEFAULT_VALUE,
         data: EMPTY_ARRAY,
+        downloadForm: false,
+        selectedData: "",
+    }
+
+    closeDownloadForm = () =>  {
+        this.setState({downloadForm: false})
+    }
+
+    downloadForm = (dataId: string) => {
+        this.setState({
+            downloadForm:true,
+            selectedData: dataId,
+        })
     }
 
     //TODO BUTTONS FUNCTIONS    
@@ -42,7 +57,7 @@ class DataSourceList extends React.Component<Props, State> {
                      <td>   
                         <ButtonGroup minimal={true} vertical={false}>
                             <Button icon="delete" />
-                            <DownloadButton fileName={item.dataId + ".txt"} fileContent={item.data}/>                          
+                            <Button icon="download" onClick={() => this.downloadForm(item.dataId)} />
                         </ButtonGroup>
                      </td>
 
@@ -110,7 +125,13 @@ class DataSourceList extends React.Component<Props, State> {
     }
     
     render() {
-        return <HTMLTable className={classNames(Classes.HTML_TABLE_BORDERED, Classes.HTML_TABLE_STRIPED, Classes.HTML_TABLE)}>
+        let selectedData = this.props.items.find( (item) => {
+            return item.dataId === this.state.selectedData;
+        });
+
+        return (
+            <div>
+                <HTMLTable className={classNames(Classes.HTML_TABLE_BORDERED, Classes.HTML_TABLE_STRIPED, Classes.HTML_TABLE)}>
                  <thead>
                     <tr>
                      <th>DATA ID</th>
@@ -125,9 +146,19 @@ class DataSourceList extends React.Component<Props, State> {
                 </tbody>
                 
               </HTMLTable>
-            
 
-       
+              {
+                selectedData &&
+              
+              <DownloadForm 
+                isOpen={this.state.downloadForm}
+                dataConfig={selectedData}
+                handleClose={this.closeDownloadForm}
+              />
+              }
+                
+            </div>
+                );
     }
 }   
 
