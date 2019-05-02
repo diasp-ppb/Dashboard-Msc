@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.2",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express.js": "^1.0.0",
+    "mongodb": "^3.2.3",
     "targz": "^1.0.1"
   }
 }

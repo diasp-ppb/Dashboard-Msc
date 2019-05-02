@@ -313,8 +313,6 @@ function readRawData(cb) {
                                     
                                     findPolyLine(currentEdge.n2, (result) => {
                                         polyLine = polyLine.concat(result);
-
-                                        console.log(polyLine.toString());
     
                                         polylines.push(polyLine);
                                     });
