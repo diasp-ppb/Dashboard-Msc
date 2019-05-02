@@ -24,7 +24,7 @@ interface State {
 const DEFAULT_VALUE = "";
 const EMPTY_ARRAY: [] = [];
 class DataSourceList extends React.Component<Props, State> {
- 
+    
     state = {
         dataId: DEFAULT_VALUE,
         route: DEFAULT_VALUE,
@@ -149,8 +149,7 @@ class DataSourceList extends React.Component<Props, State> {
 
               {
                 selectedData &&
-              
-              <DownloadForm 
+                  <DownloadForm 
                 isOpen={this.state.downloadForm}
                 dataConfig={selectedData}
                 handleClose={this.closeDownloadForm}

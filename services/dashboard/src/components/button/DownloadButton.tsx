@@ -1,7 +1,7 @@
 import React , { Component } from "react";
 
 
-import { Button } from "@blueprintjs/core";
+import { Button, Intent } from "@blueprintjs/core";
 
 interface Props {
     fileName: string,
@@ -58,8 +58,10 @@ export default class DownloadButton extends Component<Props> {
     render() {
         let {fileContent, fileName } = this.props;
         return (
-            <Button onClick={() => this.downloadFile(fileName,fileContent)}
-                    icon="download"/>
+            <Button  intent={Intent.SUCCESS }onClick={() => this.downloadFile(fileName,fileContent)}
+                    icon="download">
+                    Download
+            </Button>
         );
     }
 }

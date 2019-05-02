@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, TextArea, Intent, Label, Button } from '@blueprintjs/core';
+import { Dialog, InputGroup, Button, Card } from '@blueprintjs/core';
 import { DataConfig } from '../../Interfaces';
 import  DownloadButton  from '../../components/button/DownloadButton'
 import { calServer } from '../../settings/Settings';
@@ -16,12 +16,7 @@ export default class DownloadForm extends React.Component<Props> {
         reasonSended: false,
     }
 
-    handleClose() {
-        this.props.handleClose();
-    }
-
-
-    submitReason() {
+    submitReason = () => {
         fetch(  calServer.submitReason, {
                 method: 'POST',
                 headers: {
@@ -34,13 +29,14 @@ export default class DownloadForm extends React.Component<Props> {
          })
         }).then( response => {
             if(!response.ok) {
-
+                this.setState({reason: "reason wasn't accepted, retry",
+                               reasonSended: false})
             }else {
                 //TOAST
                 this.setState({reasonSended: true});
             }
         }).catch((error: Error) => {
-            throw error;
+            console.log("errpe")
         });
     }
 
@@ -51,28 +47,33 @@ export default class DownloadForm extends React.Component<Props> {
         <Dialog
             usePortal={true}
             isOpen={this.props.isOpen}
-            onClose={this.handleClose}
+            onClose={ () => this.props.handleClose()}
             canOutsideClickClose={true}
         >   
+            <Card>
+            <h2>Reason</h2>
 
-            <Label>
-                Reason
-                <TextArea
+
+            <InputGroup
                     large={true}
-                    intent={Intent.PRIMARY}
-                    onChange={ (event) => this.setState({reason: event.target.value}) }
+                    onChange={ (event:any) => this.setState({reason: event.target.value})}
+                    placeholder="Fill the reason"
                     value={this.state.reason}
-                />
-            </Label>
-
+            />
+            
             <Button 
                 icon="send-to"
                 onClick={this.submitReason}
-            />
+            >
+            Submit
+            </Button>
+
 
             {reason.length > 5 && this.state.reasonSended &&
             <DownloadButton fileName={dataConfig.dataId + ".txt"} fileContent={dataConfig.data}/>                          
             }
+
+           </Card>
         </Dialog>
         );
     }
