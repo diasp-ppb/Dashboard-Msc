@@ -8,7 +8,6 @@ import {
     Mosaic,
     MosaicNode,
     MosaicWindow,
-    MosaicZeroState,
   } from 'react-mosaic-component';
 
 import {

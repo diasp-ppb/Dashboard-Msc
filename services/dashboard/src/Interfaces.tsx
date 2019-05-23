@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import { Classes } from '@blueprintjs/core';
+import { Classes, IToastProps } from '@blueprintjs/core';
 import {MosaicNode} from 'react-mosaic-component';
 import { BarConfig } from './visualization/Chart/BarChart';
 import { LineConfig } from './visualization/Chart/LineChart';
-import { Polyline } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
+import { List } from 'immutable';
  
 export const THEMES = {
   ['Blueprint']: 'mosaic-blueprint-theme',
@@ -70,6 +70,7 @@ export interface DataConfig {
 }
 
 export interface IAppState {
+    toastQueue: List<IToastProps>,
     layers: LayerState[],
     currentTheme: Theme;
     isOpen: boolean,

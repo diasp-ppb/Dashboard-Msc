@@ -8,6 +8,8 @@ import {
 } from '../actions/AppActions'
 import { IAppState, VisualizationConfig } from '../../Interfaces';
 import { initialAppState } from '../../settings/Settings';
+import { List } from 'immutable';
+import { IToastProps } from '@blueprintjs/core';
 
 
 
@@ -104,6 +106,23 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
       vis[state.currentLayer] = visualizationsInLayer;
       
       return {...state, visualizations: vis};
+    }
+
+    case AppActionTypes.ENQUEUE_TOAST: {
+      console.log("TOASTS before ", state.toastQueue);
+      
+      let toasts = state.toastQueue.push(action.toast);
+
+      console.log("TOASTS", toasts);
+      
+      return {
+         ...state, toastQueue: toasts}
+    }
+
+    case AppActionTypes.CLEAR_TOASTS: {
+      return {
+        ...state, toastQueue: List<IToastProps>([])
+      }
     }
     default:
       return state;

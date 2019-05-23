@@ -1,5 +1,7 @@
 
 import { IAppState } from '../Interfaces';
+import { List } from 'immutable';
+import { IToastProps } from '@blueprintjs/core';
 
 const dataExample = [
     {
@@ -37,6 +39,7 @@ const dataExample = [
 
 
 export const initialAppState:IAppState = {
+    toastQueue: List<IToastProps>([]),
     layers: [
         {
           currentNode: {

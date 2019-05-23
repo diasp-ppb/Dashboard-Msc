@@ -1,6 +1,7 @@
 import { ActionCreator, Dispatch } from 'redux';
 import { MosaicNode } from 'react-mosaic-component';
 import { Theme, VisualizationConfig, DataConfig } from '../../Interfaces';
+import { IToastProps } from '@blueprintjs/core';
 
 
 export enum AppActionTypes {
@@ -14,7 +15,9 @@ export enum AppActionTypes {
     ADD_VISUALIZATION = 'ADD_VISUALIZATION',
     ADD_DATA_CONFIG = 'ADD_DATA_CONFIG',
     UPDATE_DATA = 'UPDATE_DATA',
-    UPDATE_VISUALIZATION = 'UPDATE_VISUALIZATION'
+    UPDATE_VISUALIZATION = 'UPDATE_VISUALIZATION',
+    CLEAR_TOASTS = 'CLEAR_TOASTS',
+    ENQUEUE_TOAST = 'ENQUEUE_TOAST',
 }
 
 export interface IAppAddLayer{
@@ -66,10 +69,19 @@ export interface IAppVisualizationUpdate {
     visualizationConfig: VisualizationConfig
 }
 
+export interface IAppEnqueueToast {
+    type: AppActionTypes.ENQUEUE_TOAST,
+    toast: IToastProps,
+}
+
+export interface IAppClearToasts {
+    type: AppActionTypes.CLEAR_TOASTS,
+}
+
 export type AppAction = IAppAddLayer | IAppRemoveLayer | IAppOpenDrawer | 
                      IAppCloseDrawer | IAppSelectLayer | IAppUpdateWindowArrangement |
                      IAppChangeTheme | IAppAddVisualization | IAppAddDataConfig | IAppDataUpdate |
-                     IAppVisualizationUpdate;
+                     IAppVisualizationUpdate | IAppEnqueueToast | IAppClearToasts;
 
 export function addLayer() {
     return {
@@ -137,5 +149,19 @@ export function updateVisualizationConfig(visualizationConfig: VisualizationConf
     return {
         type: AppActionTypes.UPDATE_VISUALIZATION,
         visualizationConfig: visualizationConfig,
+    }
+}
+
+export function addToast(toast:IToastProps) {
+    return {
+        type: AppActionTypes.ENQUEUE_TOAST,
+        toast,
+    }
+}
+
+
+export function cleartToasts() {
+    return {
+        type: AppActionTypes.CLEAR_TOASTS,
     }
 }

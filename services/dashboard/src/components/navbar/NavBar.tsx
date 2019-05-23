@@ -122,6 +122,13 @@ class NavBar extends React.Component<Props> {
                 >
                   Add Window
                 </Button>
+
+                <Button
+                  onClick={this.addToTopRight}
+                  icon="send-to"
+                >
+                 Rate Visualization
+                </Button>
               </ButtonGroup>
             </NavbarGroup>
     
