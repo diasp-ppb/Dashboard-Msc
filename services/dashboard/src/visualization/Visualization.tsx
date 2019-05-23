@@ -1,17 +1,17 @@
 import React from 'react'
-import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion} from '../Interfaces';
+import { VisualizationProps, Visualization_Types, defaulxAxis, defaultRegion, Filter} from '../Interfaces';
 import MapLeaflet from './Map/MapLeaflet'
 import LineChart from './Chart/LineChart';
 import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
 import MapDeckGL from './Map/MapDeckGL';
-import  FilterSelector  from './Filter/FilterSelector';
-
+import FilterSelector  from './Filter/FilterSelector';
 export default class Visualization extends React.Component<VisualizationProps> {
 
 
     applyFilters(){
       const filters = this.props.visualizationConfig.filters;
+      
       if(!filters)
       {
         if(!this.props.data)
@@ -30,9 +30,10 @@ export default class Visualization extends React.Component<VisualizationProps> {
 
       let result = this.props.data.data;
 
-      filters.forEach( function(element) {
+      filters.forEach( function(element: Filter) {
          console.log("filter", element);
-          result = element.filter(result, element.options);
+         if(element && element.filter)
+            result = element.filter(result, element.options);
       }
       );
 

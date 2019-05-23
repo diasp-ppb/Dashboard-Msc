@@ -139,12 +139,12 @@ class FilterSelector extends React.Component<Props, State> {
             <FormGroup>
                 <ControlGroup fill={true} vertical={false}>
                    <Label>
-                        Visualization
+                        Window
                         <HTMLSelect  value={selectedVisualization} options={visIds} onChange={(event) => {this.setState({selectedVisualization: event.currentTarget.value})}}/>
                     </Label>
                     
                     <Label>
-                        Datasource
+                        Data Id
                         <HTMLSelect  value={selectedDataSet} options={datasetIds}  onChange={ (event) => {this.changeDataset(event.currentTarget.value)}}/>
                     </Label>
 

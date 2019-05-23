@@ -1,16 +1,20 @@
 import React  from 'react';
-import { Button, EditableText, ButtonGroup, HTMLTable, Classes } from '@blueprintjs/core';
+import { Button, EditableText, ButtonGroup, HTMLTable, Classes, IToastProps, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState, DataConfig } from '../../Interfaces';
+import { IAppState, DataConfig, Theme } from '../../Interfaces';
 import classNames from 'classnames';
 import './DataSourceList.css'
-import { addDataConfig } from '../../redux/actions/AppActions';
+import { addDataConfig, addToast } from '../../redux/actions/AppActions';
 import { api } from '../../data/Data';
 import DownloadForm from '../../components/downloadForm/DownloadForm';
+
+
 interface Props {
     items: DataConfig[];
     addDataConfig: Function;
+    toastMessage: Function;
+    theme: string,
 }
 
 interface State {
@@ -56,7 +60,6 @@ class DataSourceList extends React.Component<Props, State> {
                      </td>
                      <td>   
                         <ButtonGroup minimal={true} vertical={false}>
-                            <Button icon="delete" />
                             <Button icon="download" onClick={() => this.downloadForm(item.dataId)} />
                         </ButtonGroup>
                      </td>
@@ -70,7 +73,17 @@ class DataSourceList extends React.Component<Props, State> {
 
         api<any>(this.state.route)
         .then( (data:any) => {
-            this.setState({data: data});
+
+            let toast: IToastProps =
+                {   
+                    className: this.props.theme,
+                    timeout: 5000,
+                    intent: Intent.SUCCESS,
+                    message: 'Card was added and auto-selected for you.',
+                };
+
+            this.props.toastMessage(toast);
+            this.addNewEntry(data);
         })
         .catch((error: Error) => {
             console.log(error) //TOAST DISPATCH TO USER
@@ -88,25 +101,26 @@ class DataSourceList extends React.Component<Props, State> {
                  </td>
                  <td>
                      <ButtonGroup minimal={true} vertical={false}>    
-                        <Button icon="plus" onClick={this.addNewEntry}/> 
-                        <Button icon="arrow-down" onClick={this.fetchData}/>  
+                        <Button icon="plus" onClick={this.fetchData}/>  
                      </ButtonGroup>
                  </td>
                </tr>
     }
 
-    addNewEntry = () =>  {
+    addNewEntry = (data:any) =>  {
+        //from remote location
         if(this.state.dataId !== DEFAULT_VALUE && this.state.route !== DEFAULT_VALUE) {
             let newEntry:DataConfig = {
                 dataId: this.state.dataId,
                 apiEndpoint: {
                     route: this.state.route
                 },
-                data: this.state.data
+                data: data
             }
             this.props.addDataConfig(newEntry);
-        } else
-        if(this.state.dataId !== DEFAULT_VALUE && this.state.data !== EMPTY_ARRAY)
+        }
+        //from drop location //TODO interface not implemented  
+        else if(this.state.dataId !== DEFAULT_VALUE && this.state.data !== EMPTY_ARRAY)
         {
             let newEntry:DataConfig = {
                 dataId: this.state.dataId,
@@ -134,9 +148,9 @@ class DataSourceList extends React.Component<Props, State> {
                 <HTMLTable className={classNames(Classes.HTML_TABLE_BORDERED, Classes.HTML_TABLE_STRIPED, Classes.HTML_TABLE)}>
                  <thead>
                     <tr>
-                     <th>DATA ID</th>
-                     <th>API ROUTE</th>
-                     <th>OPTIONS</th>
+                     <th>Data Id</th>
+                     <th>DataSource</th>
+                     <th>Options</th>
                     </tr>
                 </thead>
 
@@ -163,13 +177,16 @@ class DataSourceList extends React.Component<Props, State> {
 
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        addDataConfig: (newEntry: DataConfig) => dispatch(addDataConfig(newEntry))
+        addDataConfig: (newEntry: DataConfig) => dispatch(addDataConfig(newEntry)),
+        toastMessage: (toast:IToastProps) => dispatch(addToast(toast))
+
     }
   };
 
   const mapStateToProps = (store: IAppState) => {
     return {
         items: store.data,
+        theme: store.currentTheme,
     };
   };
   

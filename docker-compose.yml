@@ -85,6 +85,3 @@ services:
       - ADMIN_PASSWORD=pw123
     volumes:
       - ./fuseki:/fuseki
-
-#  postgres-data:
-
