@@ -6,6 +6,7 @@ import BarChart from './Chart/BarChart';
 import DataSourceList from './DataSource/DataSourceList';
 import MapDeckGL from './Map/MapDeckGL';
 import FilterSelector  from './Filter/FilterSelector';
+import Heatmap from './Map/HeatMap';
 export default class Visualization extends React.Component<VisualizationProps> {
 
 
@@ -91,6 +92,13 @@ export default class Visualization extends React.Component<VisualizationProps> {
 
         case Visualization_Types.FILTER_SELECTION: {
           return <FilterSelector/>
+        }
+
+        case Visualization_Types.HEAT_MAP_LEAFLET: {
+          return <Heatmap 
+                     width={width}
+                     height={height*1.07}
+                  />
         }
 
         default: null

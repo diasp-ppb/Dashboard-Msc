@@ -4,6 +4,7 @@ import { THEMES, Theme, IAppState, LayerState } from "../../Interfaces";
 import { Dispatch } from "redux";
 import { closeDrawer, selectLayer } from "../../redux/actions/AppActions";
 import { connect } from "react-redux";
+import './SideMenu.css';
 
 interface Props {
   currentTheme: Theme,
@@ -32,7 +33,7 @@ class SideMenu extends React.Component<Props> {
   render() {
     return (
       <Drawer
-        className={THEMES[this.props.currentTheme]}
+        className={"menu-drawer " + THEMES[this.props.currentTheme]}
         icon="info-sign"
         onClose={() => this.props.closeDrawer()}
         title="Urban Menu"

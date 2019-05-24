@@ -1,0 +1,29 @@
+.menu-drawer.bp3-drawer:not(.bp3-vertical).bp3-overlay-enter, 
+.menu-drawer.bp3-drawer:not(.bp3-vertical):not(.bp3-reversed).bp3-overlay-appear {
+  transform: translateX(-100%);
+}
+
+.menu-drawer.bp3-drawer:not(.bp3-vertical).bp3-overlay-enter-active, 
+.menu-drawer.bp3-drawer:not(.bp3-vertical):not(.bp3-reversed).bp3-overlay-appear-active {
+  transform: translateX(0);
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 1, 0.75, 0.9);
+  transition-delay: 0;
+}
+
+.menu-drawer.bp3-drawer:not(.bp3-vertical).bp3-overlay-exit {
+  transform: translateX(0);
+}
+
+.menu-drawer.bp3-drawer:not(.bp3-vertical):not(.bp3-reversed).bp3-overlay-exit-active {
+  transform: translateX(-100%);
+  transition-property: transform;
+  transition-duration: 100ms;
+  transition-timing-function: cubic-bezier(0.4, 1, 0.75, 0.9);
+  transition-delay: 0;
+}
+
+.menu-drawer.bp3-drawer:not(.bp3-vertical) {
+  left: 0;
+}

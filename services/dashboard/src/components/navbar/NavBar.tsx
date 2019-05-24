@@ -18,6 +18,7 @@ import { openDrawer, changeTheme, updateWindowArrangement } from '../../redux/ac
 import { connect } from 'react-redux';
 import { Navbar, Button, ButtonGroup, NavbarGroup, NavbarDivider, NavbarHeading, HTMLSelect, Classes } from '@blueprintjs/core';
 import classNames from 'classnames';
+import SubmitRating from '../submitRating/SubmitRating';
 
 interface Props {
   theme: Theme,
@@ -28,8 +29,15 @@ interface Props {
   updateWindowArrangement: Function,
 }
 
-class NavBar extends React.Component<Props> {
+interface State {
+  openRating:  boolean,
+}
 
+class NavBar extends React.Component<Props, State> {
+
+    state:State = {
+      openRating: false,
+    }
     addToTopRight = () => {
     
         let { currentNode, windowCount } = this.props.currentLayer;
@@ -75,6 +83,10 @@ class NavBar extends React.Component<Props> {
         let newNode = createBalancedTreeFromLeaves(leaves);
         this.props.updateWindowArrangement(this.props.layerId, newNode);
       };
+
+      rateVisualization = ()  =>  {
+        this.setState({openRating: true});
+      }
 
 
 
@@ -124,14 +136,15 @@ class NavBar extends React.Component<Props> {
                 </Button>
 
                 <Button
-                  onClick={this.addToTopRight}
+                  onClick={this.rateVisualization}
                   icon="send-to"
                 >
                  Rate Visualization
                 </Button>
               </ButtonGroup>
             </NavbarGroup>
-    
+
+            <SubmitRating isOpen={this.state.openRating} handleClose={() =>  {this.setState({openRating : false})}}/>
           </Navbar>
          
         );

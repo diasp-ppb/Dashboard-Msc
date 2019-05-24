@@ -30,6 +30,7 @@
     "react-hot-loader": "^4.7.1",
     "react-leaflet": "^2.2.1",
     "react-leaflet-d3": "^2.0.0",
+    "react-leaflet-heatmap-layer": "^2.0.0",
     "react-map-gl": "^4.0.14",
     "react-mosaic-component": "^2.1.0",
     "react-redux": "^6.0.1",

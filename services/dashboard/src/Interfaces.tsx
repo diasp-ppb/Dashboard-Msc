@@ -18,6 +18,7 @@ export enum Visualization_Types {
     LINE_CHART = 'LINE_CHART',
     DATA_SOURCES = 'DATA_SOURCES',
     FILTER_SELECTION = 'FILTER_SELECTION',
+    HEAT_MAP_LEAFLET = 'HEAT_MAP_LEAFLET',
 }
 
 export type Theme = keyof typeof THEMES;
