@@ -109,7 +109,7 @@ export const calServer = {
 }
 
 export const recomendationServer = {
-  submitRecomendation: 'http://localhost:8001/submitRec',
+  insertrec: 'http://localhost:8001/insert',
   getrec: 'http://localhost:8001/getrec',
 }
 

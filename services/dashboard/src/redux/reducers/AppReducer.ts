@@ -124,7 +124,7 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
       console.log("TOASTS before ", state.toastQueue);
       
       let toasts = state.toastQueue.push(action.toast);
-
+      
       console.log("TOASTS", toasts);
       
       return {

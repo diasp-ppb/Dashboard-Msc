@@ -1,11 +1,16 @@
 import React from 'react';
-import { Dialog, Button, Card, HTMLSelect, IOptionProps, NumericInput } from '@blueprintjs/core';
-import { calServer } from '../../settings/Settings';
-import { RecomendedThemes, RecomendationVisualizations } from '../../Interfaces';
+import { Dialog, Button, Card, HTMLSelect, IOptionProps, NumericInput, IToastProps, Intent } from '@blueprintjs/core';
+import { calServer, recomendationServer } from '../../settings/Settings';
+import { RecomendedThemes, RecomendationVisualizations, IAppState } from '../../Interfaces';
+import { addToast } from '../../redux/actions/AppActions';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
 interface Props {
     isOpen: boolean,
-    handleClose:Function
+    handleClose:Function,
+    theme: string,
+    toastMessage: Function
 }
 
 
@@ -37,7 +42,7 @@ const ratingComponent:IOptionProps[] = [
 ];
 
 
-export default class SubmitRating extends React.Component<Props,State> {
+class SubmitRating extends React.Component<Props,State> {
     state:State = {
         visualization: ":barchart",
         hasRatingComponent: ":RecommendedTheme",
@@ -45,7 +50,7 @@ export default class SubmitRating extends React.Component<Props,State> {
         max: 5,
         min: 0,
     }
-
+   
     submitRating = () => {
 
         if(!this.state.visualization) {
@@ -53,12 +58,12 @@ export default class SubmitRating extends React.Component<Props,State> {
             return;
         } 
 
-        let body = "visualization: " + this.state.visualization + " ,";
+        let body = "{\"visualization\":\"" + this.state.visualization + "\",\"ratingStatements\":[{" ;
     
 
         if(this.state.hasRatingComponent === ":RecommendedTheme" ){
             if(this.state.hasRatingCategoricalValue) {
-                body += "hasRatingCategoricalValue: " + this.state.hasRatingCategoricalValue + " ,";      
+                body += "\"hasRatingComponent\":\"" + this.state.hasRatingComponent  + "\",\"hasRatingCategoricalValue\":\"" + this.state.hasRatingCategoricalValue + "\" ";      
             }
             else {
                 //message error
@@ -68,7 +73,7 @@ export default class SubmitRating extends React.Component<Props,State> {
         else{
             if(this.state.hasRatingComponent === ":VisualComplexity" || this.state.hasRatingComponent === ":VisualAppeling"){
                 if(this.state.hasRatingScore){
-                    body += "hasRatingScore: " + this.state.hasRatingScore + " ,";
+                    body += "\"hasRatingComponent\":\"" + this.state.hasRatingComponent + "\",\"hasRatingScore:\"" + this.state.hasRatingScore + "\" ";
                 }
                 else {
                     //message error
@@ -81,17 +86,32 @@ export default class SubmitRating extends React.Component<Props,State> {
             }
         }
 
-       fetch(  calServer.submitReason, {
+        body += "}]}"
+
+
+        console.log(body);
+
+       fetch(  recomendationServer.insertrec, {
                 method: 'POST',
                 headers: {
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json',
+                            'Content-Type': 'application/json'
                         },
-                body: JSON.stringify(body)
+                body: body
         }).then( response => {
-            //RESET STATE
+            if(response.ok) {
+                let toast: IToastProps =
+                {   
+                    className: this.props.theme,
+                    timeout: 5000,
+                    intent: Intent.SUCCESS,
+                    message: 'Dataset added',
+                };
+
+                this.props.toastMessage(toast);
+            }
         }).catch((error: Error) => {
-            console.log("errpe")
+            console.log(error);
         });
     }
 
@@ -134,7 +154,7 @@ export default class SubmitRating extends React.Component<Props,State> {
             
             <h3>RatingComponent</h3>
 
-            <HTMLSelect options={ratingComponent} defaultValue={":RecommendedTheme"} onChange={ (event) => {this.setState({hasRatingComponent: event.currentTarget.value})}}/> 
+            <HTMLSelect options={ratingComponent} onChange={ (event) => {this.setState({hasRatingComponent: event.currentTarget.value})}}/> 
 
             <h4> Value </h4>
 
@@ -144,7 +164,7 @@ export default class SubmitRating extends React.Component<Props,State> {
             <Button
                 style={{display: 'block', marginTop: '20px'}} 
                 icon="send-to"
-                onClick={this.submitRating}
+                onClick={() => this.submitRating()}
             >
             Submit
             </Button>
@@ -154,3 +174,19 @@ export default class SubmitRating extends React.Component<Props,State> {
         );
     }
 }
+
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        toastMessage: (toast:IToastProps) => dispatch(addToast(toast))
+    }
+  };
+
+  const mapStateToProps = (store: IAppState) => {
+    return {
+        theme: store.currentTheme
+    };
+  };
+  
+  
+  export default connect(mapStateToProps,mapDispatchToProps)(SubmitRating);

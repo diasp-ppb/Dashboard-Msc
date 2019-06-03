@@ -4,7 +4,8 @@ import {Visualization_Types, RecomendedThemes, DataConfig, IAppState, Recomendat
 
 import { 
     FormGroup,
-    HTMLSelect
+    HTMLSelect,
+    HTMLTable
  } from "@blueprintjs/core";
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -17,22 +18,16 @@ interface Props {
     data: DataConfig[],
 }
 
+interface Recomendation {
+    visualization: string,
+    rating: number,
+    visualComplexity: number,
+    visualAppeling: number,
+}
+
 class VisualizationSelector extends React.Component<Props> {
     state = {
-        recomendations: [
-            {
-              "visualization": "linechart",
-              "rating": 1,
-              "visualComplexity": 1,
-              "visualAppeling": 1
-            },
-            {
-              "visualization": "barchart",
-              "rating": 2,
-              "visualComplexity": 1,
-              "visualAppeling": 1
-            }
-          ],
+        recomendations: [],
         dataIds: this.dataIdToArray(),
     }
 
@@ -60,7 +55,7 @@ class VisualizationSelector extends React.Component<Props> {
    
 
     getRecomendation(theme:string) {
-      /*  fetch(recomendationServer.getrec+ "?theme="+theme, {
+      fetch(recomendationServer.getrec+ "?theme="+theme, {
             method: 'get',
             headers: {
               'Accept': 'application/json',
@@ -76,7 +71,6 @@ class VisualizationSelector extends React.Component<Props> {
           .catch((error: Error) => {
             throw error;
           });
-      */
     }
 
     render() {
@@ -126,8 +120,8 @@ class VisualizationSelector extends React.Component<Props> {
 
         <div>
             <h4> Recomendation </h4>
-            
-            <table> 
+                  
+            <HTMLTable>
                 <thead>
                     <tr>
                        
@@ -142,25 +136,24 @@ class VisualizationSelector extends React.Component<Props> {
                 
                 <tbody>
                     {
-                        this.state.recomendations.map( (element:any, index) =>    {
+                        this.state.recomendations.map( (element:Recomendation, index) =>    {
                             let visName = RecomendationVisualizations.find( function(option) {
                                 return option.value == ":" + element.visualization;
                             })
                             
                             return (    
-                            <tr>
+                            <tr key={index}>
                                 <td>
-                                 {visName}
+                                    {visName && visName.label}
                                 </td>
                                 <td>
-                                    teste
-                                    //element.rating}
+                                    {element.rating}
                                 </td>
                                 <td>
-                                  //element.visualComplexity}
+                                    {element.visualComplexity}
                                 </td>
                                 <td>
-                                    //element.visualAppeling}
+                                    {element.visualAppeling}
                                 </td>
                             </tr>
                             );
@@ -168,7 +161,7 @@ class VisualizationSelector extends React.Component<Props> {
                         )
                     }
                 </tbody>
-            </table>
+            </HTMLTable>
 
 
  
