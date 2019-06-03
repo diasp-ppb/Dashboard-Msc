@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { Navbar, Button, ButtonGroup, NavbarGroup, NavbarDivider, NavbarHeading, HTMLSelect, Classes } from '@blueprintjs/core';
 import classNames from 'classnames';
 import SubmitRating from '../submitRating/SubmitRating';
+import { sendEvent } from '../../analytics/Analytics';
 
 interface Props {
   theme: Theme,
@@ -39,7 +40,8 @@ class NavBar extends React.Component<Props, State> {
       openRating: false,
     }
     addToTopRight = () => {
-    
+        sendEvent("NAVBAR_ADD_TOP_RIGHT");
+
         let { currentNode, windowCount } = this.props.currentLayer;
 
         if (currentNode) {
@@ -79,12 +81,14 @@ class NavBar extends React.Component<Props, State> {
 
 
       autoArrange = () => {
+        sendEvent("NAVBAR_ADD_AUTOARRANJE");
         const leaves = getLeaves(this.props.currentLayer.currentNode);
         let newNode = createBalancedTreeFromLeaves(leaves);
         this.props.updateWindowArrangement(this.props.layerId, newNode);
       };
 
       rateVisualization = ()  =>  {
+        sendEvent("NAVBAR_RATEVISUALIZATION");
         this.setState({openRating: true});
       }
 

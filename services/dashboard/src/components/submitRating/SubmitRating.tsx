@@ -1,81 +1,123 @@
 import React from 'react';
-import { Dialog, InputGroup, Button, Card, HTMLSelect, IOptionProps } from '@blueprintjs/core';
-import { DataConfig } from '../../Interfaces';
-import  DownloadButton  from '../../components/button/DownloadButton'
+import { Dialog, Button, Card, HTMLSelect, IOptionProps, NumericInput } from '@blueprintjs/core';
 import { calServer } from '../../settings/Settings';
-import { SELECT } from '@blueprintjs/core/lib/esm/common/classes';
-import { Label } from 'recharts';
+import { RecomendedThemes, RecomendationVisualizations } from '../../Interfaces';
 
 interface Props {
     isOpen: boolean,
     handleClose:Function
 }
 
-interface hasRatingComponent {
-    ratingComponent: string,
-    ratingScore?: string,
-}
+
 
 interface State {
     visualization: string,
-    rating: hasRatingComponent;
+    hasRatingComponent: string,
+    hasRatingScore?: number,
+    hasRatingCategoricalValue?: string,
+    max: number,
+    min: number
 }
+
+
+
+const ratingComponent:IOptionProps[] = [
+    {
+        label: "RecommendedTheme",
+        value: ":RecommendedTheme",
+    },
+    {
+        label: "VisualComplexity",
+        value: ":VisualComplexity",
+    },
+    {
+        label: "VisualAppeling",
+        value: ":VisualAppeling"
+    }
+];
 
 
 export default class SubmitRating extends React.Component<Props,State> {
     state:State = {
         visualization: ":barchart",
-        rating: {
-            ratingComponent: ":RecomendedTheme",
-        },
+        hasRatingComponent: ":RecommendedTheme",
+        hasRatingCategoricalValue: ":TravelIntention",
+        max: 5,
+        min: 0,
     }
 
     submitRating = () => {
-      /*  fetch(  calServer.submitReason, {
+
+        if(!this.state.visualization) {
+            //MESSAGE ERROR
+            return;
+        } 
+
+        let body = "visualization: " + this.state.visualization + " ,";
+    
+
+        if(this.state.hasRatingComponent === ":RecommendedTheme" ){
+            if(this.state.hasRatingCategoricalValue) {
+                body += "hasRatingCategoricalValue: " + this.state.hasRatingCategoricalValue + " ,";      
+            }
+            else {
+                //message error
+                return;
+            }
+        }
+        else{
+            if(this.state.hasRatingComponent === ":VisualComplexity" || this.state.hasRatingComponent === ":VisualAppeling"){
+                if(this.state.hasRatingScore){
+                    body += "hasRatingScore: " + this.state.hasRatingScore + " ,";
+                }
+                else {
+                    //message error
+                    return;
+                }
+            }
+            else {
+                //message error
+                return;
+            }
+        }
+
+       fetch(  calServer.submitReason, {
                 method: 'POST',
                 headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
                         },
-                body: JSON.stringify({
-                reason: this.state.reason,
-                dataId: this.props.dataConfig.dataId,
-         })
+                body: JSON.stringify(body)
         }).then( response => {
-            if(!response.ok) {
-                this.setState({reason: "reason wasn't accepted, retry",
-                               reasonSended: false})
-            }else {
-                //TOAST
-                this.setState({reasonSended: true});
-            }
+            //RESET STATE
         }).catch((error: Error) => {
             console.log("errpe")
-        });*/
+        });
+    }
+
+    selectValue() {
+
+        let ratingComponent = this.state.hasRatingComponent;
+
+        if(ratingComponent === ":RecommendedTheme")
+        {
+            return (
+                <HTMLSelect options={RecomendedThemes} onChange={ (event) => {this.setState({hasRatingCategoricalValue: event.currentTarget.value})}}/> 
+            );
+        }
+        else {
+            return (
+                <NumericInput 
+                                max={this.state.max}
+                                min={this.state.min}
+                                placeholder="Enter a number..." onValueChange={ (value) => this.setState({hasRatingScore: value})}
+                              />
+            );
+        }
     }
 
     render () {
-        const visualizations:IOptionProps[] = [
-            {
-                label: "BAR_CHART",
-                value: ":barchart",
-            },
-            {
-                label: "LINE_CHART",
-                value: ":linechart",
-            }
-        ];
-
-        const ratingComponent:IOptionProps[] = [
-            {
-                label: "BAR_CHART",
-                value: ":barchart",
-            },
-            {
-                label: "LINE_CHART",
-                value: ":linechart",
-            }
-        ];
+        
 
         return (
         <Dialog
@@ -87,21 +129,20 @@ export default class SubmitRating extends React.Component<Props,State> {
             <Card>
             <h2>Visualization</h2>
 
-            <HTMLSelect options={visualizations} defaultValue={":barchart"} onChange={ (event) => {this.setState({visualization: event.currentTarget.value})}}/> 
+            <HTMLSelect options={RecomendationVisualizations} defaultValue={":barchart"} onChange={ (event) => {this.setState({visualization: event.currentTarget.value})}}/> 
             
-
+            
             <h3>RatingComponent</h3>
 
-            <HTMLSelect options={ratingComponent} defaultValue={":RecomendedTheme"} onChange={ (event) => {this.setState({visualization: event.currentTarget.value})}}/> 
+            <HTMLSelect options={ratingComponent} defaultValue={":RecommendedTheme"} onChange={ (event) => {this.setState({hasRatingComponent: event.currentTarget.value})}}/> 
 
             <h4> Value </h4>
 
-            <InputGroup/>
-            
+            {this.selectValue()}            
 
 
-            
-            <Button 
+            <Button
+                style={{display: 'block', marginTop: '20px'}} 
                 icon="send-to"
                 onClick={this.submitRating}
             >

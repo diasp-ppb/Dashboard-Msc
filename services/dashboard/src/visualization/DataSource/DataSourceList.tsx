@@ -8,6 +8,7 @@ import './DataSourceList.css'
 import { addDataConfig, addToast } from '../../redux/actions/AppActions';
 import { api } from '../../data/Data';
 import DownloadForm from '../../components/downloadForm/DownloadForm';
+import { sendEvent } from '../../analytics/Analytics';
 
 
 interface Props {
@@ -79,7 +80,7 @@ class DataSourceList extends React.Component<Props, State> {
                     className: this.props.theme,
                     timeout: 5000,
                     intent: Intent.SUCCESS,
-                    message: 'Card was added and auto-selected for you.',
+                    message: 'Dataset added',
                 };
 
             this.props.toastMessage(toast);
@@ -118,6 +119,7 @@ class DataSourceList extends React.Component<Props, State> {
                 data: data
             }
             this.props.addDataConfig(newEntry);
+            sendEvent("ADDED_NEW_DATASOURCE");
         }
         //from drop location //TODO interface not implemented  
         else if(this.state.dataId !== DEFAULT_VALUE && this.state.data !== EMPTY_ARRAY)
@@ -127,7 +129,7 @@ class DataSourceList extends React.Component<Props, State> {
                 data: this.state.data,
             }
             this.props.addDataConfig(newEntry);
-
+            sendEvent("ADDED_NEW_DATASOURCE");
         }
     }
     resetState = () => {

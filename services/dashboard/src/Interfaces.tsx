@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Classes, IToastProps } from '@blueprintjs/core';
+import { Classes, IToastProps, IOptionProps } from '@blueprintjs/core';
 import {MosaicNode} from 'react-mosaic-component';
 import { BarConfig } from './visualization/Chart/BarChart';
 import { LineConfig } from './visualization/Chart/LineChart';
@@ -114,3 +114,25 @@ export const defaulxAxis:xAxis = {
     dataKey: "name"
   }
   
+
+export const RecomendedThemes:IOptionProps[] = [
+    {
+        label: "TravelIntention",
+        value: ":TravelIntention",
+    },
+    {
+        label: "Aggregation",
+        value: ":Aggregation"
+    }
+];
+
+export const RecomendationVisualizations:IOptionProps[] = [
+    {
+        label: "BAR_CHART",
+        value: ":barchart",
+    },
+    {
+        label: "LINE_CHART",
+        value: ":linechart",
+    }
+];

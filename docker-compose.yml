@@ -85,3 +85,16 @@ services:
       - ADMIN_PASSWORD=pw123
     volumes:
       - ./fuseki:/fuseki
+  
+  analytics:
+    build: ./services/analitycs
+    container_name: analytics
+    command: nodemon -L ./server.js
+    ports: 
+      - '3005:3005' 
+    environment:  
+      - NODE_ENV=development
+    links:
+      - mongo
+    volumes: 
+      - ./services/analitycs:/usr/src/app

@@ -10,6 +10,7 @@ import { IAppState, VisualizationConfig } from '../../Interfaces';
 import { initialAppState } from '../../settings/Settings';
 import { List } from 'immutable';
 import { IToastProps } from '@blueprintjs/core';
+import { sendEvent } from '../../analytics/Analytics';
 
 
 
@@ -19,24 +20,28 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
 ) => {
   switch (action.type) {
     case AppActionTypes.ADD_LAYER: {
+      sendEvent("ADD_LAYER");
       return {
         ...state,
         layers: Object.assign(state.layers, {currentNode: {}, splitPercentage: 40,})
       };
     }
     case AppActionTypes.OPEN_DRAWER: {
+      sendEvent("OPEN_DRAWER");
       return {
         ...state,
         isOpen: true,
       }
     }
     case AppActionTypes.CLOSE_DRAWER: {
+      sendEvent("CLOSE_DRAWER");
       return {
         ...state,
         isOpen: false,
       }
     }
     case AppActionTypes.SELECT_LAYER: {
+      sendEvent("SELECT_LAYER_"+ action.layerId);
       return {
         ...state,
         currentLayer: action.layerId
@@ -44,6 +49,7 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
     }
 
     case AppActionTypes.UPDATE_WINDOWS_ARRANGEMENT: {
+      sendEvent("UPDATED_WINDOW_ARRANGEMENT");
       const list = state.layers.map((item, j) => {
         if (j === state.currentLayer) {
           return {...item, currentNode: action.currentNode, windowCount: item.windowCount + 1}
@@ -60,12 +66,15 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
 
 
     case AppActionTypes.CHANGE_THEME: {
+      sendEvent("CHANGED_THEME");
       return {
         ...state,
         currentTheme: action.theme
       }
     }
     case AppActionTypes.ADD_VISUALIZATION: {
+      sendEvent("ADD_VISUALIZATION_" + action.vis.type);
+
       const visu = state.visualizations.map((item, j) => {
          if(j=== state.currentLayer){
            return [...item, action.vis ] 
@@ -76,11 +85,13 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
      return {...state, visualizations: visu}
     }
     case AppActionTypes.ADD_DATA_CONFIG: {
+      sendEvent("ADD_DATA_CONFIG");
        let dataConfig =  action.dataConfig
        let data = [...state.data, dataConfig];
        return {...state, data: data};
     }
     case AppActionTypes.UPDATE_DATA: {
+      sendEvent("UPDATE_DATA");
       const data = state.data.map((item, _j) =>  {
         if(item.dataId === action.dataId)
         {
@@ -93,6 +104,7 @@ export const AppReducer: Reducer<IAppState, AppAction> = (
     }
 
     case AppActionTypes.UPDATE_VISUALIZATION:{
+      sendEvent("VISUALZIATION_UPDATED");
       let visualizationsInLayer:VisualizationConfig[] = state.visualizations[state.currentLayer].map( (item) => {
         if(item.nodeId === action.visualizationConfig.nodeId) {
           return action.visualizationConfig;

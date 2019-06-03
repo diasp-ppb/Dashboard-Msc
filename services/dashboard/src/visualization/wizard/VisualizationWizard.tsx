@@ -54,11 +54,12 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
                      <VisualizationSelector 
                         visualizationSelected={this.state.visualizationConfig.type}
                         selectVisualization={this.selectVisualization}
+                        selectDataId={this.selectDataId}
                      /> 
                      :  
                      panel === "configuration" ?  
                      <ConfigurationSelector updateConfig={this.updateVisualizationConfig} config={this.state.visualizationConfig}/> 
-                     : <DataSelector selectData={this.selectDataId}/>;
+                     : null;
     }
 
     selectDataId = (item: string) => {
@@ -87,6 +88,7 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
         this.setState( {visualizationConfig: Object.assign(this.state.visualizationConfig, visualizationConfig)});
     }
 
+
     render() {
 
         return (
@@ -107,7 +109,6 @@ class VisualizationWizard extends React.Component<VisualizationWizardProps, Stat
                             selectedTabId={this.state.navbarTabId}
                         >
                             <Tab id="visualization" title="Visualization" />
-                            <Tab id="data" title="Data" />
                             <Tab id="configuration" title="Configuration" />
                         </Tabs>
                     </Navbar.Group>

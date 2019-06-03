@@ -29,6 +29,7 @@ import Visualization from '../visualization/Visualization'
 import ContainerDimensions from 'react-container-dimensions'
 import VisualizationWizard from '../visualization/wizard/VisualizationWizard';
 import NavBar from '../components/navbar/NavBar';
+import { sendEvent } from '../analytics/Analytics';
 
 
 interface Props {
@@ -72,6 +73,7 @@ class Layer extends React.Component<Props, State> {
       };
     
       _onRelease = (currentNode: MosaicNode<number> | null) => {
+        sendEvent("RELEASED_WINDOW");
       };
 
     getVisualization(id:Number, width:number, height:number) {

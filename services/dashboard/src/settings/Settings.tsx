@@ -108,3 +108,10 @@ export const calServer = {
   submitReason: 'http://localhost:3002/sendReason',
 }
 
+export const recomendationServer = {
+  submitRecomendation: 'http://localhost:8001/submitRec',
+  getrec: 'http://localhost:8001/getrec',
+}
+
+export const id = "test03";
+
