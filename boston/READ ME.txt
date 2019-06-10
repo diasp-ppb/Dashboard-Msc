@@ -1,0 +1,9 @@
+Estes dados dizem respeito ao periodo de 09/01/2019 até 24/01/2019.
+
+Os dados estao divididos em 8 ficheiros .csv;
+7 ficheiros sao relativos à performance dos veiculos relativamente aos horarios previstos. Estes ficheiros tem o formato {NOME_DA_LINHA}_routeAdhrence
+O outro ficheiro contem informação de todas as linhas relativamente à posição geográfica dos veiculos.
+
+Em todos os ficheiros, a coluna "Updated At" diz respeito à data-hora que os dados foram atualizados pela ultima vez. Esta informação vem da API, nao do momento em que a call à API foi feita.
+
+As informações estão assim separadas para evitar calls muito complexas à API
