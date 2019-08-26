@@ -2,8 +2,8 @@ const fs = require('fs');
 const csv = require('fast-csv');
 const HashMap = require('hashmap');
 
-
 /*
+
 const vehicleLocation = "vehicleLocation.csv"
 
 const vehicles = new HashMap();
@@ -83,7 +83,7 @@ function buildPath(){
                     path: [{
                         lat: element.latitude,
                         lng: element.longitude,
-                        tags: [element.udpdateAt],
+                        tags: [element.udpdateAt, element.nextStop],
                     }]
                 }
             }
@@ -96,7 +96,7 @@ function buildPath(){
                         path: [{
                             lat: element.latitude,
                             lng: element.longitude,
-                            tags: [element.udpdateAt],
+                            tags: [element.udpdateAt, element.nextStop],
                         }]
                     }
                 }
@@ -104,7 +104,7 @@ function buildPath(){
                     currentRoute.path.push({
                         lat: element.latitude,
                         lng: element.longitude,
-                        tags: [element.udpdateAt],
+                        tags: [element.udpdateAt, element.nextStop],
                     })
                 }
             }
@@ -115,9 +115,9 @@ function buildPath(){
 */
 
 
-
 ///GENERATE  DELAY POINTS 
 
+/*
 const vehicleTimelines = "Green-B_routeAdhrence.csv"
 
 const timesTracks = [];
@@ -212,6 +212,51 @@ const csvStream = csv
 stream.pipe(csvStream);
 }
 
+
+
+*/
+
+const data = require('./processedData/G-10120_trips');
+const data2 = require('./processedData/delaysGeoLocated');
+const nodes = [];
+const polylines = [];
+
+let count = 0;
+
+    let trips = data.data;
+    let positions = data2.data2;
+
+
+    for(count; count < trips.length ; count++) {
+    let element = trips[count];
+    let polyline = [];
+
+    element.path.forEach(function(node) {
+        polyline.push([node.lat, node.lng]);
+    });
+
+    polylines.push(polyline);
+
+    }
+
+    
+    positions.forEach(function(element) {
+
+        let intensity = element.delayTime;
+        let lat = element.lat;
+        let lng = element.lng;
+        
+        nodes.push( [
+                     lat,
+                     lng,
+                     intensity
+                    ]
+                  );
+    })
+
+writeToFile("processedData/polylines.json", polylines);
+writeToFile("processedData/nodes.json", nodes);
+
 function writeToFile(filepath, data) {
     try {
         fs.writeFileSync(filepath, JSON.stringify(data))
@@ -219,4 +264,7 @@ function writeToFile(filepath, data) {
         console.error(err)
       }
 }
+
+
+
 

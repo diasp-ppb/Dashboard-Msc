@@ -46,8 +46,8 @@ class MapLeaflet extends React.Component<Props,State> {
     state:State = {
       height: 800, // > 400 
       width: 0,
-      lng: -8.5601989, //TODO
-      lat: 40.5857447, //TODO
+      lng: -71.09210968017578, //TODO
+      lat:  42.34811019897461, //TODO
       zoom: 12,
       polylines: [],
     };

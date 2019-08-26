@@ -83,7 +83,7 @@ class DataSourceList extends React.Component<Props, State> {
                     message: 'Dataset added',
                 };
 
-            this.props.toastMessage(toast);
+            //this.props.toastMessage(toast);
             this.addNewEntry(data);
         })
         .catch((error: Error) => {
